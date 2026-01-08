@@ -1,4 +1,5 @@
 import pygame
+from car_lane import CarLane
 
 class Level:
     def __init__(self, player=None, screen_size=(1280, 960)):
@@ -14,8 +15,12 @@ class Level:
         # Voeg één testplatform in het midden
         self.platforms.append(pygame.Rect(0, 400, self.screen_width, 50))
 
-    def update(self):
+        # test car lane
+        self.car_lane = CarLane(400, True)
+
+    def update(self, dt):
         # Hier zou je enemies/platform logic updaten
+        self.car_lane.update(dt)
         pass
 
     def draw(self, screen):
@@ -31,3 +36,6 @@ class Level:
         # Platforms
         for plat in self.platforms:
             pygame.draw.rect(screen, self.platform_color, plat)
+
+        #car lane
+        self.car_lane.draw(screen)
