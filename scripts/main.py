@@ -1,5 +1,6 @@
 import pygame
 import sys
+from player import Player
 
 
 pygame.init()
@@ -9,6 +10,10 @@ SCREENY = 960
 SCREEN_RES = pygame.Vector2(SCREENX, SCREENY)  # Screen resolution
 screen = pygame.display.set_mode(SCREEN_RES)
 clock = pygame.time.Clock()
+
+player = Player(
+    pygame.Vector2(SCREENX / 2 - 32, SCREENY - 64)
+)  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
 
 
 def main():
@@ -21,6 +26,10 @@ def main():
                 sys.exit()
 
         screen.fill("grey")
+
+        player.update()
+
+        player.draw(screen)
 
         pygame.display.update()
 
