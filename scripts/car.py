@@ -9,7 +9,7 @@ class Car:
         self.direction = direction
 
     def update(self, dt: float):
-        self.hitbox.x += 0.2 * self.direction * dt
+        self.hitbox.x += int(0.2 * self.direction * dt)
 
     def draw(self, surface: pygame.Surface):
         pygame.draw.rect(surface, Color(255, 0, 0), self.hitbox)
