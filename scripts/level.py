@@ -34,6 +34,8 @@ class Level:
         # Platforms
         for plat in self.platforms:
             pygame.draw.rect(screen, self.platform_color, plat)
+        
+        self.car_lane.draw(screen)
     
     def player_finished(self):
         # check if player is on finish zone
@@ -53,4 +55,4 @@ class Level:
     #     self.player.rect.topleft = (self.player.pos.x, self.player.pos.y)
 
         #car lane
-        self.car_lane.draw(screen)
+        
