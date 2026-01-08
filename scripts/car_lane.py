@@ -27,7 +27,7 @@ class CarLane:
                 self.cars.append(Car(-128, self.y, True))
             else:
                 self.cars.append(Car(1280, self.y, False))
-            self.time_until_next_car += random.randint(1000, 4000)
+            self.time_until_next_car += random.randint(1000, 4000) / 1000
 
     def draw(self, surface: pygame.Surface):
         for car in self.cars:

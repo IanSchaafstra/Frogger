@@ -18,7 +18,7 @@ class Car:
         self.driving_rightwards = driving_rightwards
 
     def update(self, dt: float):
-        movement = int(0.2 * dt)
+        movement = int(200 * dt)
         if not self.driving_rightwards:
             movement *= -1
         self.hitbox.x += movement
