@@ -29,19 +29,21 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        screen.fill("grey")
-
         level.update(dt)
-
         player.update()
 
-        level.draw(screen)
+        if level.player_finished():
+            print("FINISH bereikt!")
+            level.reset_player()
 
+        # if level.player_on_start():
+        #     print("Speler op start")
+
+        level.draw(screen)
         player.draw(screen)
 
         pygame.display.update()
-
-        dt = clock.tick(FPS)  # delta time
+        dt = clock.tick(FPS) / 1000 # delta time
 
 
 if __name__ == "__main__":

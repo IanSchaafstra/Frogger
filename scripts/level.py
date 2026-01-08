@@ -10,13 +10,14 @@ class Level:
         self.startfinish_color = (0, 255, 0)     # green
         self.platform_color = (100, 100, 100)    # grey
 
-        # Platforms als lijst van pygame.Rect
         self.platforms = []
-        # Voeg één testplatform in het midden
         self.platforms.append(pygame.Rect(0, 400, self.screen_width, 50))
 
-        # test car lane
+        self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
+        self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)        
+
         self.car_lane = CarLane(400, True)
+    
 
     def update(self, dt):
         # Hier zou je enemies/platform logic updaten
@@ -24,18 +25,32 @@ class Level:
         pass
 
     def draw(self, screen):
-        # Achtergrond
         screen.fill(self.background_color)
 
         # Start/Finish zones
-        finish_height = 50
-        start_height = 50
-        pygame.draw.rect(screen, self.startfinish_color, (0, 0, self.screen_width, finish_height))  # boven
-        pygame.draw.rect(screen, self.startfinish_color, (0, self.screen_height - start_height, self.screen_width, start_height))  # onder
+        pygame.draw.rect(screen, self.startfinish_color, self.finish_zone) 
+        pygame.draw.rect(screen, self.startfinish_color, self.start_zone)  
 
         # Platforms
         for plat in self.platforms:
             pygame.draw.rect(screen, self.platform_color, plat)
+    
+    def player_finished(self):
+        # check if player is on finish zone
+        if self.player.rect.colliderect(self.finish_zone):
+            return True
+        return False
+    
+    # def player_on_start(self):
+    #     # check if player is on start zone
+    #     if self.player.rect.colliderect(self.start_zone):
+    #         return True
+    #     return False
+    
+    # def reset_player(self):
+    #     # reset player to start 
+    #     self.player.pos.update(self.screen_width / 2 - 32, self.screen_height - 64)
+    #     self.player.rect.topleft = (self.player.pos.x, self.player.pos.y)
 
         #car lane
         self.car_lane.draw(screen)
