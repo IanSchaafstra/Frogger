@@ -8,10 +8,12 @@ pygame.init()
 class Player:
     def __init__(self, location: pygame.Vector2) -> None:
         self.pos = location
-        if os.name == "posix":
-            self.sprite = pygame.image.load("../assets/Frog.png")
-        elif os.name == "nt":
-            self.sprite = pygame.image.load("..\\assets\\Frog.png")
+        self.path = os.path.join("..", "assets", "Frog.png")
+        # if os.name == "posix":
+        #    self.sprite = pygame.image.load("../assets/Frog.png")
+        # elif os.name == "nt":
+        #    self.sprite = pygame.image.load("..\\assets\\Frog.png")
+        self.sprite = pygame.image.load(self.path)
         self.rect = self.sprite.get_rect(topleft=self.pos)
 
     def update(self):
