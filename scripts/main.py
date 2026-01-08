@@ -1,6 +1,7 @@
 import pygame
 import sys
 from player import Player
+from level import Level
 
 
 pygame.init()
@@ -16,6 +17,9 @@ player = Player(
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
 
 
+level = Level(player, SCREEN_RES)
+
+
 def main():
     dt = 0.0  # delta time
 
@@ -27,7 +31,11 @@ def main():
 
         screen.fill("grey")
 
+        level.update()
+
         player.update()
+
+        level.draw(screen)
 
         player.draw(screen)
 
