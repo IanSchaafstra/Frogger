@@ -1,5 +1,6 @@
 import pygame
 import os
+import sys
 
 
 pygame.init()
@@ -8,7 +9,13 @@ pygame.init()
 class Player:
     def __init__(self, location: pygame.Vector2) -> None:
         self.pos = location
-        self.path = os.path.join("..", "assets", "Frog.png")
+        if os.name == "posix":
+            self.path = os.path.join("..", "assets", "Frog.png")
+        elif os.name == "nt":
+            self.path = os.path.join("assets", "Frog.png")
+        else:
+            print("Error with asset loading, please report")
+            sys.exit()
         # if os.name == "posix":
         #    self.sprite = pygame.image.load("../assets/Frog.png")
         # elif os.name == "nt":
