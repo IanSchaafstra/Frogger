@@ -5,11 +5,21 @@ pygame.init()
 
 
 class Player:
-    def __init__(self) -> None:
-        self.pos = pygame.Vector2(0, 0)
-        self.sprite = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
+    def __init__(self, location: pygame.Vector2) -> None:
+        self.pos = location
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
 
     def update(self):
-        keys = pygame.key.get_just_pressed()
+        keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
         if keys[pygame.K_w]:
             self.pos.y -= 64
+        if keys[pygame.K_s]:
+            self.pos.y += 64
+        if keys[pygame.K_a]:
+            self.pos.x -= 64
+        if keys[pygame.K_d]:
+            self.pos.x += 64
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
+
+    def draw(self, screen: pygame.Surface):
+        pygame.draw.rect(screen, "green", self.rect)
