@@ -26,9 +26,7 @@ class Player:
     def update(self):
         keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
         if keys[pygame.K_w]:
-            for i in range(16):
-                self.pos.y -= 4
-                self.rect = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
+            self.pos.y -= 64
         if keys[pygame.K_s]:
             self.pos.y += 64
         if keys[pygame.K_a]:
