@@ -24,8 +24,6 @@ def main():
 
         pygame.display.update()
 
-        clock.tick(FPS)
-
         dt = clock.tick(FPS)  # delta time
 
 
