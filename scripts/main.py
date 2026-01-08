@@ -31,7 +31,7 @@ def main():
 
         screen.fill("grey")
 
-        level.update()
+        level.update(dt)
 
         player.update()
 

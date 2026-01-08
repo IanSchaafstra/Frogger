@@ -1,4 +1,5 @@
 import pygame
+from car_lane import CarLane
 
 class Level:
     def __init__(self, player=None, screen_size=(1280, 960)):
@@ -16,6 +17,12 @@ class Level:
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)        
 
     def update(self):
+        # test car lane
+        self.car_lane = CarLane(400, True)
+
+    def update(self, dt):
+        # Hier zou je enemies/platform logic updaten
+        self.car_lane.update(dt)
         pass
 
     def draw(self, screen):
@@ -45,3 +52,6 @@ class Level:
         # reset player to start 
         self.player.pos.update(self.screen_width / 2 - 32, self.screen_height - 64)
         self.player.rect.topleft = (self.player.pos.x, self.player.pos.y)
+
+        #car lane
+        self.car_lane.draw(screen)
