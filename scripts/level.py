@@ -1,4 +1,5 @@
 import pygame
+import sys
 from car_lane import CarLane
 
 class Level:
@@ -22,7 +23,12 @@ class Level:
     def update(self, dt):
         # Hier zou je enemies/platform logic updaten
         self.car_lane.update(dt)
-        pass
+        self.check_collisions()
+
+    def check_collisions(self):
+        if self.player.rect.collidelist([car.hitbox for car in self.car_lane.cars]) != -1:
+            # hit car code
+            sys.exit()
 
     def draw(self, screen):
         screen.fill(self.background_color)
