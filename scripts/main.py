@@ -2,6 +2,7 @@ import pygame
 import sys
 from player import Player
 from level import Level
+from score import Score
 
 
 pygame.init()
@@ -18,6 +19,9 @@ player = Player(
 
 level = Level(player, SCREEN_RES)
 
+score = Score(player)
+
+
 def main():
     dt = 0.0  # delta time
 
@@ -29,13 +33,14 @@ def main():
 
         level.update(dt)
         player.update()
+        score.update(dt)
 
         level.draw(screen)
         player.draw(screen)
-        
-        pygame.display.update()
+        score.draw(screen)
 
-        dt = clock.tick(FPS) / 1000 # delta time
+        pygame.display.update()
+        dt = clock.tick(FPS) / 1000  # delta time
 
 
 if __name__ == "__main__":

@@ -24,6 +24,9 @@ class Player:
         self.rot_sprite = self.sprite
         self.rect = self.sprite.get_rect(topleft=self.pos)
 
+        self._score = 0
+        self._score_marker = self.pos.y
+
     def update(self):
         keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
         if keys[pygame.K_w]:
@@ -45,7 +48,18 @@ class Player:
             if self.pos.x > 1280 - self.rect.width:
                 self.pos.x -= 64
         self.rect = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
+        self.update_score()
 
     def draw(self, screen: pygame.Surface):
         # pygame.draw.rect(screen, "green", self.rect)
         screen.blit(self.rot_sprite, self.pos)
+
+    def get_score(self) -> int:
+        return self._score
+
+    def update_score(self):
+        if self.pos.y < self._score_marker:
+            self._score += 1
+            self._score_marker = self.pos.y
+
+        print(self._score)
