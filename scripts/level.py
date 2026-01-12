@@ -17,14 +17,15 @@ class Level:
         self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)        
 
-        self.car_lane = CarLane(400, True)
+        self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False)]
     
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
 
     def update(self, dt):
         # Hier zou je enemies/platform logic updaten
-        self.car_lane.update(dt)
+        for car_lane in self.car_lanes:
+            car_lane.update(dt)
 
         on_start = self.player.rect.colliderect(self.start_zone)
         if on_start and not self._on_start_last_frame:
@@ -39,9 +40,10 @@ class Level:
         self.check_collisions()
 
     def check_collisions(self):
-        if self.player.rect.collidelist([car.hitbox for car in self.car_lane.cars]) != -1:
-            # hit car code
-            sys.exit()
+        for car_lane in self.car_lanes:
+            if self.player.rect.collidelist([car.hitbox for car in car_lane.cars]) != -1:
+                # hit car code
+                sys.exit()
 
     def draw(self, screen):
         screen.fill(self.background_color)
@@ -53,9 +55,10 @@ class Level:
         # Platforms
         for plat in self.platforms:
             pygame.draw.rect(screen, self.platform_color, plat)
-
-        #car lane
-        self.car_lane.draw(screen)
+        
+        # Cars
+        for car_lane in self.car_lanes:
+            car_lane.draw(screen)
 
     def reset_player(self):
         self.player.pos.update(self.screen_width // 2, self.screen_height - 100)
