@@ -61,5 +61,3 @@ class Player:
         if self.pos.y < self._score_marker:
             self._score += 1
             self._score_marker = self.pos.y
-
-        print(self._score)
