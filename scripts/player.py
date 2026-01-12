@@ -30,8 +30,10 @@ class Player:
             self.pos.y -= 64
             self.rot_sprite = pygame.transform.rotate(self.sprite, 0)
         if keys[pygame.K_s]:
-            self.pos.y += 64
             self.rot_sprite = pygame.transform.rotate(self.sprite, 180)
+            self.pos.y += 64
+            if self.pos.y > 960 - self.rect.width:
+                self.pos.y -= 64
         if keys[pygame.K_a]:
             self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
             self.pos.x -= 64
