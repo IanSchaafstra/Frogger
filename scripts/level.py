@@ -19,11 +19,24 @@ class Level:
 
         self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False)]
     
+        self._on_start_last_frame = False
+        self._on_finish_last_frame = False
 
     def update(self, dt):
         # Hier zou je enemies/platform logic updaten
         for car_lane in self.car_lanes:
             car_lane.update(dt)
+
+        on_start = self.player.rect.colliderect(self.start_zone)
+        if on_start and not self._on_start_last_frame:
+            print("Player on start zone")
+        self._on_start_last_frame = on_start
+
+        on_finish = self.player.rect.colliderect(self.finish_zone)
+        if on_finish and not self._on_finish_last_frame:
+            print("Finished!")
+            self.reset_player()
+        self._on_finish_last_frame = on_finish
         self.check_collisions()
 
     def check_collisions(self):
@@ -46,23 +59,7 @@ class Level:
         # Cars
         for car_lane in self.car_lanes:
             car_lane.draw(screen)
-    
-    def player_finished(self):
-        # check if player is on finish zone
-        if self.player.rect.colliderect(self.finish_zone):
-            return True
-        return False
-    
-    # def player_on_start(self):
-    #     # check if player is on start zone
-    #     if self.player.rect.colliderect(self.start_zone):
-    #         return True
-    #     return False
-    
-    # def reset_player(self):
-    #     # reset player to start 
-    #     self.player.pos.update(self.screen_width / 2 - 32, self.screen_height - 64)
-    #     self.player.rect.topleft = (self.player.pos.x, self.player.pos.y)
 
-        #car lane
-        
+    def reset_player(self):
+        self.player.pos.update(self.screen_width // 2, self.screen_height - 100)
+        self.player.rect.topleft = (self.player.pos.x, self.player.pos.y)

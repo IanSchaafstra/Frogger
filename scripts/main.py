@@ -2,6 +2,7 @@ import pygame
 import sys
 from player import Player
 from level import Level
+from score import Score
 
 
 pygame.init()
@@ -16,8 +17,9 @@ player = Player(
     pygame.Vector2(SCREENX / 2 - 32, SCREENY - 64)
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
 
-
 level = Level(player, SCREEN_RES)
+
+score = Score(player)
 
 
 def main():
@@ -31,19 +33,14 @@ def main():
 
         level.update(dt)
         player.update()
-
-        if level.player_finished():
-            print("FINISH bereikt!")
-            level.reset_player()
-
-        # if level.player_on_start():
-        #     print("Speler op start")
+        score.update(dt)
 
         level.draw(screen)
         player.draw(screen)
+        score.draw(screen)
 
         pygame.display.update()
-        dt = clock.tick(FPS) / 1000 # delta time
+        dt = clock.tick(FPS) / 1000  # delta time
 
 
 if __name__ == "__main__":
