@@ -35,9 +35,13 @@ class Player:
         if keys[pygame.K_a]:
             self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
             self.pos.x -= 64
+            if self.pos.x < 0:
+                self.pos.x += 64
         if keys[pygame.K_d]:
-            self.pos.x += 64
             self.rot_sprite = pygame.transform.rotate(self.sprite, -90)
+            self.pos.x += 64
+            if self.pos.x > 1280 - self.rect.width:
+                self.pos.x -= 64
         self.rect = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
 
     def draw(self, screen: pygame.Surface):
