@@ -80,8 +80,8 @@ class Level:
                 self.player.rect.collidelist([car.hitbox for car in car_lane.cars])
                 != -1
             ):
-                # hit car code
-                sys.exit()
+                print("Player got hit by car!")
+                self.player.reset_player()
 
     def draw(self, screen):
         screen.fill(self.background_color)
