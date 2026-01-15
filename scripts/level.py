@@ -37,7 +37,7 @@ class Level:
         on_finish = self.player.rect.colliderect(self.finish_zone)
         if on_finish and not self._on_finish_last_frame:
             print("Finished!")
-            self.reset_player()
+            self.player.reset_player()
         self._on_finish_last_frame = on_finish
         self.check_collisions()
 
@@ -65,9 +65,11 @@ class Level:
         for car_lane in self.car_lanes:
             car_lane.draw(screen)
 
-    def reset_player(self):
-        self.player.pos.update(self.screen_width // 2, self.screen_height - 100)
-        self.player.rect.topleft = (
-            self.player.pos.x,
-            self.player.pos.y,
-        )  # this line is redundant. It doesn't seem to be causing issues, but it gives an error in my code editor.
+        # the reset_player function has been moved to player.py
+
+        #    def reset_player(self):
+        #        self.player.pos.update(self.screen_width // 2, self.screen_height - 100)
+        #        self.player.rect.topleft = (
+        #            self.player.pos.x,
+        #            self.player.pos.y,
+        # )  # this line is redundant. It doesn't seem to be causing issues, but it gives an error in my code editor.
