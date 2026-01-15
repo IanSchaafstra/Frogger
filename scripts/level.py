@@ -12,12 +12,13 @@ class Level:
         self.gameover = game_over
         self.screen_width, self.screen_height = screen_size
 
-        self.background_color = (135, 206, 235)  # sky blue
+        self.background_color = (0, 100, 0)  # Dark green
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
 
         self.platforms = []
-        self.platforms.append(pygame.Rect(0, 400, self.screen_width, 50))
+        self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
+        self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
 
         self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
