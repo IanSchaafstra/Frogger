@@ -111,9 +111,9 @@ class Level:
         for car_lane in self.car_lanes:
             car_lane.draw(screen)
 
-            # Water lanes
-            for water_lane in self.water_lanes:
-                water_lane.draw(screen)
+        # Water lanes
+        for water_lane in self.water_lanes:
+            water_lane.draw(screen)
         # the reset_player function has been moved to player.py
 
         #    def reset_player(self):
