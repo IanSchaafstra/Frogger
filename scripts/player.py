@@ -26,6 +26,7 @@ class Player:
 
         self._score = 0
         self._score_marker = self.pos.y
+        self.is_alive = True
 
     def update(self):
         keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
@@ -49,6 +50,18 @@ class Player:
                 self.pos.x -= 64
         self.rect = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
         self.update_score()
+    
+    def move_with_log(self, log_speed):
+        self.pos.x += log_speed
+
+        if self.pos.x < 0:
+            self.pos.x = 0
+            self.is_alive = False  # Of direct resetten
+        elif self.pos.x > 1280 - 64:  # 64 = player breedte
+            self.pos.x = 1280 - 64
+            self.is_alive = False
+
+        self.rect.x = int(self.pos.x)
 
     def draw(self, screen: pygame.Surface):
         # pygame.draw.rect(screen, "green", self.rect)

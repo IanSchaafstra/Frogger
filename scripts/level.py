@@ -1,6 +1,7 @@
 import pygame
 import sys
 from car_lane import CarLane
+from water_lane import WaterLane
 
 class Level:
     def __init__(self, player=None, screen_size=(1280, 960)):
@@ -19,6 +20,12 @@ class Level:
 
         self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False)]
     
+        self.water_lanes = [
+            WaterLane(128, moving_right=True, speed=2, log_count=3),
+            WaterLane(192, moving_right=False, speed=3, log_count=2),
+            WaterLane(256, moving_right=True, speed=2, log_count=4),
+        ]
+
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
 
@@ -26,6 +33,12 @@ class Level:
         # Hier zou je enemies/platform logic updaten
         for car_lane in self.car_lanes:
             car_lane.update(dt)
+
+        for water_lane in self.water_lanes:
+            water_lane.update()
+
+        self.check_water()
+        self.check_collisions()
 
         on_start = self.player.rect.colliderect(self.start_zone)
         if on_start and not self._on_start_last_frame:
@@ -37,7 +50,28 @@ class Level:
             print("Finished!")
             self.reset_player()
         self._on_finish_last_frame = on_finish
-        self.check_collisions()
+       
+    def check_water(self):
+        on_water = False
+        on_log = False
+    
+        for water_lane in self.water_lanes:
+            if (self.player.rect.top < water_lane.y_pos + water_lane.height and
+                self.player.rect.bottom > water_lane.y_pos):
+                on_water = True
+                # print(f"Player in water lane at y={water_lane.y_pos}")  # DEBUG
+                log = water_lane.get_log_at_position(self.player.rect)
+            
+                if log:
+                    on_log = True
+                    # print(f"Player on log!")  # DEBUG
+                    self.player.move_with_log(water_lane.speed_x)
+                    break  
+        
+        # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
+        if on_water and not on_log:
+            print("Player drowned!")
+            self.reset_player()
 
     def check_collisions(self):
         for car_lane in self.car_lanes:
@@ -56,6 +90,10 @@ class Level:
         for plat in self.platforms:
             pygame.draw.rect(screen, self.platform_color, plat)
         
+        # Water lanes
+        for water_lane in self.water_lanes:
+            water_lane.draw(screen)
+
         # Cars
         for car_lane in self.car_lanes:
             car_lane.draw(screen)
