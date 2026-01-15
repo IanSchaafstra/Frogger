@@ -34,6 +34,11 @@ def main():
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and game_over.game_over:
+                    level.restart()
+                    score.reset()
+
         level.update(dt)
         player.update()
         score.update(dt)
