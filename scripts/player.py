@@ -64,3 +64,4 @@ class Player:
 
     def reset_player(self):
         self.pos = pygame.Vector2(1280 // 2, 960 - 64)
+        self._score_marker = self.pos.y
