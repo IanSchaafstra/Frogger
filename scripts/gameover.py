@@ -20,11 +20,13 @@ class GameOver:
                     sys.exit()
         self.image = pygame.image.load(self.path)
         self.rect = self.image.get_rect()
-
         self.game_over = False
 
     def set_game_over(self):
         self.game_over = True
+    
+    def reset(self):
+        self.game_over = False
 
     def draw(self, screen: pygame.Surface):
         if self.game_over:
