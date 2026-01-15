@@ -16,9 +16,9 @@ class Level:
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
 
-        self.platforms = []
-        self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
-        self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
+        #self.platforms = []
+        #self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
+        #self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
 
         self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
@@ -105,8 +105,8 @@ class Level:
         pygame.draw.rect(screen, self.startfinish_color, self.start_zone)
 
         # Platforms
-        for plat in self.platforms:
-            pygame.draw.rect(screen, self.platform_color, plat)
+        #for plat in self.platforms:
+        #    pygame.draw.rect(screen, self.platform_color, plat)
 
         # Cars
         for car_lane in self.car_lanes:
