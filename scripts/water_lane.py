@@ -10,7 +10,7 @@ class WaterLane:
         # self.water_color = (0, 119, 190)
 
         script_dir = os.path.dirname(__file__)
-        water_path = os.path.join(script_dir, '..', 'assets', 'water.png')
+        water_path = os.path.join(script_dir, '..', 'assets', 'Water.png')
         self.water_image = pygame.image.load(water_path).convert_alpha()
 
         self.logs = []
