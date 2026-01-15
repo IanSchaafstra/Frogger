@@ -23,7 +23,7 @@ class Level:
         self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
 
-        self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False)]
+        self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False), CarLane(512, True, 1.5)]
         self.water_lanes = [
             WaterLane(128, moving_right=True, speed=2, log_count=3),
             WaterLane(192, moving_right=False, speed=3, log_count=2),
