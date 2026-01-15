@@ -16,14 +16,14 @@ class Level:
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
 
-        self.platforms = []
-        self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
-        self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
+        #self.platforms = []
+        #self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
+        #self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
 
         self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
 
-        self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False)]
+        self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False), CarLane(512, True, 1.5)]
         self.water_lanes = [
             WaterLane(128, moving_right=True, speed=2, log_count=3),
             WaterLane(192, moving_right=False, speed=3, log_count=2),
@@ -105,8 +105,8 @@ class Level:
         pygame.draw.rect(screen, self.startfinish_color, self.start_zone)
 
         # Platforms
-        for plat in self.platforms:
-            pygame.draw.rect(screen, self.platform_color, plat)
+        #for plat in self.platforms:
+        #    pygame.draw.rect(screen, self.platform_color, plat)
 
         # Cars
         for car_lane in self.car_lanes:

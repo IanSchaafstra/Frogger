@@ -1,5 +1,6 @@
 import pygame
 import random
+import os
 from car import Car
 
 class CarLane:
@@ -14,6 +15,11 @@ class CarLane:
         self.cars: list[Car] = []
         self.time_until_next_car: float = 0.0
         self.speed_multiplier = speed_multiplier
+
+        script_dir = os.path.dirname(__file__)
+        road_path = os.path.join(script_dir, '..', 'assets', 'Road.png')
+        self.road_image = pygame.image.load(road_path).convert_alpha()
+
         self.init_start_cars()
 
     def init_start_cars(self):
@@ -46,5 +52,11 @@ class CarLane:
             self.time_until_next_car += random.randint(CarLane._min_time_between_cars, CarLane._max_time_between_cars) / 1000
 
     def draw(self, surface: pygame.Surface):
+        #road
+        tile_width = self.road_image.get_width()
+        for x in range(0, 1280, tile_width):
+            surface.blit(self.road_image, (x, self.y))
+
+        #cars
         for car in self.cars:
             car.draw(surface)
