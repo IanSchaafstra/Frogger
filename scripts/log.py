@@ -5,7 +5,7 @@ class Log:
     def __init__(self, x, y):
         # Load log image
         script_dir = os.path.dirname(__file__)
-        log_path = os.path.join(script_dir, '..', 'assets', 'Log.png')
+        log_path = os.path.join(script_dir, '..', 'assets', 'LogWater.png')
         self.image = pygame.image.load(log_path).convert_alpha()
         
         # Scale to 3 tiles wide (192px) and keep original height (or set to 48)
