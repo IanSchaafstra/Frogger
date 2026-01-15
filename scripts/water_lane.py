@@ -1,3 +1,4 @@
+import os
 import pygame
 from log import Log
 
@@ -6,7 +7,12 @@ class WaterLane:
         self.y_pos = y_pos
         self.height = 64
         self.speed_x = speed if moving_right else -speed
-        self.water_color = (0, 119, 190)
+        # self.water_color = (0, 119, 190)
+
+        script_dir = os.path.dirname(__file__)
+        water_path = os.path.join(script_dir, '..', 'assets', 'water.png')
+        self.water_image = pygame.image.load(water_path).convert_alpha()
+
         self.logs = []
         
         spacing = 1280 // log_count
@@ -20,8 +26,9 @@ class WaterLane:
             log.update(self.speed_x, 1280)
     
     def draw(self, screen):
-        water_rect = pygame.Rect(0, self.y_pos, 1280, self.height)
-        pygame.draw.rect(screen, self.water_color, water_rect)
+        tile_width = self.water_image.get_width()
+        for x in range(0, 1280, tile_width):
+            screen.blit(self.water_image, (x, self.y_pos))
         
         for log in self.logs:
             log.draw(screen)
