@@ -26,3 +26,6 @@ class Score:
 
     def draw(self, screen: pygame.Surface):
         screen.blit(self.surface, (50, 50))
+
+    def reset(self):
+        self._score = 0

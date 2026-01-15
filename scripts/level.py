@@ -60,6 +60,9 @@ class Level:
             self._on_finish_last_frame = on_finish
 
     def check_water(self):
+        if self.game_over:
+                return
+            
         on_water = False
         on_log = False
 
@@ -87,6 +90,8 @@ class Level:
             self.gameover.set_game_over()
 
     def check_collisions(self):
+        if self.game_over:
+                return
         for car_lane in self.car_lanes:
             if (
                 self.player.rect.collidelist([car.hitbox for car in car_lane.cars])
@@ -127,3 +132,10 @@ class Level:
 
     def set_game_over(self):
         self.game_over = True
+
+    def restart(self):
+        self.game_over = False
+        self.player.reset_player()
+        self.gameover.reset()
+        self._on_start_last_frame = False
+        self._on_finish_last_frame = False  

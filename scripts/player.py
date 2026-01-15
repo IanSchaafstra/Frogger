@@ -77,10 +77,12 @@ class Player:
         if self.pos.y < self._score_marker:
             self._score += 1
             self._score_marker = self.pos.y
-
     def reset_player(self):
         self.pos = pygame.Vector2(1280 // 2, 960 - 64)
+        self.rect.topleft = (self.pos.x, self.pos.y)  # Update rect position
         self._score_marker = self.pos.y
+        self.game_over = False
+        self.is_alive = True
 
     def set_game_over(self):
         self.game_over = True
