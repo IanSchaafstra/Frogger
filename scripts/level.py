@@ -21,6 +21,11 @@ class Level:
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
 
         self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False)]
+        self.water_lanes = [
+            WaterLane(128, moving_right=True, speed=2, log_count=3),
+            WaterLane(192, moving_right=False, speed=3, log_count=2),
+            WaterLane(256, moving_right=True, speed=2, log_count=4),
+        ]
 
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
@@ -67,7 +72,7 @@ class Level:
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
             print("Player drowned!")
-            self.reset_player()
+            self.player.reset_player()
 
     def check_collisions(self):
         for car_lane in self.car_lanes:
@@ -93,6 +98,9 @@ class Level:
         for car_lane in self.car_lanes:
             car_lane.draw(screen)
 
+        # Water lanes
+            for water_lane in self.water_lanes:
+                water_lane.draw(screen)
         # the reset_player function has been moved to player.py
 
         #    def reset_player(self):
