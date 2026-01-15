@@ -1,9 +1,17 @@
 import pygame
+import os
 
 class Log:
     def __init__(self, x, y):
-        self.rect = pygame.Rect(x, y, 192, 48)
-        self.color = (139, 69, 19)
+        # Load log image
+        script_dir = os.path.dirname(__file__)
+        log_path = os.path.join(script_dir, '..', 'assets', 'Log.png')
+        self.image = pygame.image.load(log_path).convert_alpha()
+        
+        # Scale to 3 tiles wide (192px) and keep original height (or set to 48)
+        self.image = pygame.transform.scale(self.image, (192, 48))
+        
+        self.rect = self.image.get_rect(topleft=(x, y))
         
     def update(self, speed_x, screen_width):
         self.rect.x += speed_x
@@ -17,4 +25,4 @@ class Log:
                 self.rect.left = screen_width
     
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.image, self.rect)
