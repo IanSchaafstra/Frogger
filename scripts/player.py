@@ -81,6 +81,7 @@ class Player:
         self.pos = pygame.Vector2(1280 // 2, 960 - 64)
         self.rect.topleft = (self.pos.x, self.pos.y)  # Update rect position
         self._score_marker = self.pos.y
+        self._score = 0
         self.game_over = False
         self.is_alive = True
 

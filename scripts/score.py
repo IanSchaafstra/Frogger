@@ -29,3 +29,4 @@ class Score:
 
     def reset(self):
         self._score = 0
+        self.player._score = 0
