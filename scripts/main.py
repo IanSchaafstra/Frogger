@@ -3,6 +3,7 @@ import sys
 from player import Player
 from level import Level
 from score import Score
+from gameover import GameOver
 
 
 pygame.init()
@@ -16,8 +17,10 @@ clock = pygame.time.Clock()
 player = Player(
     pygame.Vector2(SCREENX / 2 - 32, SCREENY - 64)
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
+game_over = GameOver()
 
-level = Level(player, SCREEN_RES)
+level = Level(player, game_over, SCREEN_RES)
+
 
 score = Score(player)
 
@@ -38,6 +41,7 @@ def main():
         level.draw(screen)
         player.draw(screen)
         score.draw(screen)
+        game_over.draw(screen)
 
         pygame.display.update()
         dt = clock.tick(FPS) / 1000  # delta time
