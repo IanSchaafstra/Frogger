@@ -84,9 +84,9 @@ class Level:
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
             print("Player drowned!")
-            # self.player.reset_player()
+            self.player.reset_after_death()
             self.set_game_over()
-            self.player.set_game_over()
+            # self.player.set_game_over()
             self.gameover.set_game_over()
 
     def check_collisions(self):
@@ -98,8 +98,9 @@ class Level:
                 != -1
             ):
                 # hit car code
+                print("Player hit by car!")
+                self.player.reset_after_death()
                 self.set_game_over()
-                self.player.set_game_over()
                 self.gameover.set_game_over()
 
     def draw(self, screen):
