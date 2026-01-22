@@ -4,6 +4,7 @@ from car_lane import CarLane
 from water_lane import WaterLane
 from player import Player
 from gameover import GameOver
+import random
 
 
 class Level:
@@ -23,16 +24,20 @@ class Level:
         self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
         self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
 
-        self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False), CarLane(512, True, 1.5)]
-        self.water_lanes = [
-            WaterLane(128, moving_right=True, speed=2, log_count=3),
-            WaterLane(192, moving_right=False, speed=3, log_count=2),
-            WaterLane(256, moving_right=True, speed=2, log_count=4),
-        ]
+        self.car_lanes: list[CarLane] = []
+        self.water_lanes: list[WaterLane] = []
+        #self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False), CarLane(512, True, 1.5)]
+        #self.water_lanes = [
+        #    WaterLane(128, moving_right=True, speed=2, log_count=3),
+        #    WaterLane(192, moving_right=False, speed=3, log_count=2),
+        #    WaterLane(256, moving_right=True, speed=2, log_count=4),
+        #]
 
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.game_over = False
+
+        self.generate_level(self.player.get_score())
 
     def update(self, dt):
         if self.game_over:
@@ -57,7 +62,44 @@ class Level:
             if on_finish and not self._on_finish_last_frame:
                 print("Finished!")
                 self.player.reset_player()
+                self.generate_level(self.player.get_score())
             self._on_finish_last_frame = on_finish
+
+
+    def clear_lanes(self):
+        self.car_lanes.clear()
+        self.water_lanes.clear()
+
+    def generate_level(self, score: int):
+        self.clear_lanes()
+
+        # increase car speed
+        CarLane.speed = 200 + score
+
+        # load new lanes
+        # every {lane_count_scaling} score add 1 water or car lane
+        open_lanes = list(range(64, 960 - 64, 64))
+        level_difficulty = 200 + score
+        lane_count_scaling = 50
+        while level_difficulty > random.randint(0, lane_count_scaling) and len(open_lanes) >= 1:
+            next_lane = open_lanes[random.randint(0, len(open_lanes) - 1)]
+            open_lanes.remove(next_lane)
+            self.generate_lane(next_lane)
+            level_difficulty -= lane_count_scaling
+
+        # remove multi empty lanes
+        previus_open_lane = 0
+        for open_lane in open_lanes:
+            if open_lane == previus_open_lane + 64:
+                self.generate_lane(open_lane)
+            else:
+                previus_open_lane = open_lane
+        
+    def generate_lane(self, y: int):
+        if random.randint(0, 1) == 0:
+            self.car_lanes.append(CarLane(y, random.randint(0, 1) == 0, random.random() * 0.4 + 0.8))
+        else:
+            self.water_lanes.append(WaterLane(y, random.randint(0, 1) == 0, random.randint(2, 3), random.randint(2, 4)))
 
     def check_water(self):
         if self.game_over:
@@ -84,9 +126,9 @@ class Level:
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
             print("Player drowned!")
-            # self.player.reset_player()
+            self.player.reset_after_death()
             self.set_game_over()
-            self.player.set_game_over()
+            # self.player.set_game_over()
             self.gameover.set_game_over()
 
     def check_collisions(self):
@@ -98,8 +140,9 @@ class Level:
                 != -1
             ):
                 # hit car code
+                print("Player hit by car!")
+                self.player.reset_after_death()
                 self.set_game_over()
-                self.player.set_game_over()
                 self.gameover.set_game_over()
 
     def draw(self, screen):
@@ -139,3 +182,4 @@ class Level:
         self.gameover.reset()
         self._on_start_last_frame = False
         self._on_finish_last_frame = False  
+        self.generate_level(self.player.get_score())
