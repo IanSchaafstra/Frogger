@@ -167,7 +167,6 @@ class Level:
 
         # Start/Finish zones
         pygame.draw.rect(screen, self.startfinish_color, self.finish_zone)
-        pygame.draw.rect(screen, self.startfinish_color, self.start_zone)
 
         # Platforms
         # for plat in self.platforms:
