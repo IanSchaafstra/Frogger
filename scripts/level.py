@@ -195,7 +195,7 @@ class Level:
         #
 
     def draw_grass(self, screen):
-        for y in range(0, SCREEN_HEIGHT, self.grass_image.get_height()):
+        for y in range(self.finish_image.get_height(), SCREEN_HEIGHT, self.grass_image.get_height()):
             for x in range(0, SCREEN_WIDTH, self.grass_image.get_width()):
                 screen.blit(self.grass_image, (x, y))
 
