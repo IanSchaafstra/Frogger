@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from car_lane import CarLane
 from water_lane import WaterLane
 from player import Player
@@ -12,11 +13,13 @@ class Level:
     def __init__(self, player: Player, game_over: GameOver):
         self.player = player
         self.gameover = game_over
-        #self.screen_width, self.screen_height = screen_size
 
-        self.background_color = (0, 100, 0)  # Dark green
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
+
+        script_dir = os.path.dirname(__file__)
+        grass_image_path = os.path.join(script_dir, '..', 'assets', 'Grass.png')
+        self.grass_image = pygame.image.load(grass_image_path).convert_alpha()
 
         # self.platforms = []
         # self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
@@ -159,7 +162,8 @@ class Level:
                 self.gameover.set_game_over()
 
     def draw(self, screen):
-        screen.fill(self.background_color)
+        #grass
+        self.draw_grass(screen)
 
         # Start/Finish zones
         pygame.draw.rect(screen, self.startfinish_color, self.finish_zone)
@@ -185,6 +189,11 @@ class Level:
         #            self.player.pos.y,
         # )  # this line is redundant. It doesn't seem to be causing issues, but it gives an error in my code editor.
         #
+
+    def draw_grass(self, screen):
+        for y in range(0, SCREEN_HEIGHT, self.grass_image.get_height()):
+            for x in range(0, SCREEN_WIDTH, self.grass_image.get_width()):
+                screen.blit(self.grass_image, (x, y))
 
     def set_game_over(self):
         self.game_over = True
