@@ -12,18 +12,24 @@ class GameOver:
             self.path_score = os.path.join("assets", "Score.png")
             self.path_press_space = os.path.join("assets", "PressSpace.png")
             self.path_press_a = os.path.join("assets", "PressA.png")
+            self.path_font = os.path.join("assets", "fontPixel.ttf")
+            self.font = pygame.Font(self.path_font)
         elif os.name == "posix":
             try:
                 self.path_game_over = os.path.join("..", "assets", "Gameover.png")
                 self.path_score = os.path.join("..", "assets", "Score.png")
                 self.path_press_space = os.path.join("..", "assets", "PressSpace.png")
                 self.path_press_a = os.path.join("..", "assets", "PressA.png")
+                self.path_font = os.path.join("..", "assets", "fontPixel.ttf")
+                self.font = pygame.Font(self.path_font)
             except FileNotFoundError:
                 try:
                     self.path_game_over = os.path.join("assets", "Gameover.png")
                     self.path_score = os.path.join("assets", "Score.png")
                     self.path_press_space = os.path.join("assets", "PressSpace.png")
                     self.path_press_a = os.path.join("assets", "PressA.png")
+                    self.path_font = os.path.join("assets", "fontPixel.ttf")
+                    self.font = pygame.Font(self.path_font)
                 except FileNotFoundError:
                     print("File Gameover.png could not be loaded. Exiting.")
                     sys.exit()
