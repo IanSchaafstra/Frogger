@@ -18,12 +18,11 @@ clock = pygame.time.Clock()
 player = Player(
     pygame.Vector2(SCREENX / 2 - 32, SCREENY - 64)
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
-game_over = GameOver()
+score = Score(player)
+
+game_over = GameOver(player)
 
 level = Level(player, game_over, SCREEN_RES)
-
-
-score = Score(player)
 
 
 def main():
@@ -43,6 +42,7 @@ def main():
         level.update(dt)
         player.update()
         score.update(dt)
+        game_over.update(dt)
 
         level.draw(screen)
         player.draw(screen)
