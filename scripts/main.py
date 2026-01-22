@@ -4,6 +4,7 @@ from player import Player
 from level import Level
 from score import Score
 from gameover import GameOver
+from highscore import HighScore
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
@@ -19,11 +20,13 @@ clock = pygame.time.Clock()
 player = Player(
     pygame.Vector2(SCREEN_WIDTH / 2 - TILE_SIZE / 2, SCREEN_HEIGHT - TILE_SIZE)
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
-score = Score(player)
+highscore = HighScore()
+score = Score(player, highscore)
 
-game_over = GameOver(player)
 
-level = Level(player, game_over)
+game_over = GameOver(highscore, player)
+
+level = Level(player, game_over, highscore)
 
 
 def main():

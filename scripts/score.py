@@ -6,8 +6,9 @@ pygame.init()
 
 
 class Score:
-    def __init__(self, player: Player):
+    def __init__(self, player: Player, highscore):
         self.player = player
+        self.highscore = highscore
         self._score = 0
 
         if os.name == "posix":
@@ -23,9 +24,13 @@ class Score:
         self._score = self.player.get_score()
 
         self.surface = self.font.render(str(self._score), antialias=True, color="black")
-
+        current_high = self.highscore.get_highscore()
+        self.highscore_surface = self.font.render(
+            f"High Score: {current_high}", antialias=True, color="white"
+        )
     def draw(self, screen: pygame.Surface):
         screen.blit(self.surface, (50, 50))
+        screen.blit(self.highscore_surface, (50, 110))
 
     def reset(self):
         self._score = 0

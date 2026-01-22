@@ -4,14 +4,16 @@ from car_lane import CarLane
 from water_lane import WaterLane
 from player import Player
 from gameover import GameOver
+from highscore import HighScore
 import random
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
 class Level:
-    def __init__(self, player: Player, game_over: GameOver):
+    def __init__(self, player: Player, game_over: GameOver, highscore: HighScore = None):
         self.player = player
         self.gameover = game_over
+        self.highscore = highscore
         #self.screen_width, self.screen_height = screen_size
 
         self.background_color = (0, 100, 0)  # Dark green
@@ -138,8 +140,9 @@ class Level:
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
             print("Player drowned!")
+            final_score = self.player.get_score()
             # self.player.reset_after_death()
-            self.set_game_over()
+            self.set_game_over(final_score)
             self.player.set_game_over()
             self.gameover.set_game_over()
 
@@ -153,8 +156,9 @@ class Level:
             ):
                 # hit car code
                 print("Player hit by car!")
+                final_score = self.player.get_score()
                 # self.player.reset_after_death()
-                self.set_game_over()
+                self.set_game_over(final_score)
                 self.player.set_game_over()
                 self.gameover.set_game_over()
 
@@ -186,8 +190,12 @@ class Level:
         # )  # this line is redundant. It doesn't seem to be causing issues, but it gives an error in my code editor.
         #
 
-    def set_game_over(self):
+    def set_game_over(self, final_score):
         self.game_over = True
+        if self.highscore:
+            new_hs = self.highscore.update(final_score)
+            if new_hs:
+                print(f"New High Score: {final_score}!")
 
     def restart(self):
         self.game_over = False
