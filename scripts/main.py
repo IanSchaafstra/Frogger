@@ -13,17 +13,17 @@ FPS = 60
 #SCREENY = 960
 SCREEN_RES = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)  # Screen resolution
 screen = pygame.display.set_mode(SCREEN_RES)
+pygame.display.set_caption("Frogger")
 clock = pygame.time.Clock()
 
 player = Player(
     pygame.Vector2(SCREEN_WIDTH / 2 - TILE_SIZE / 2, SCREEN_HEIGHT - TILE_SIZE)
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
-game_over = GameOver()
+score = Score(player)
+
+game_over = GameOver(player)
 
 level = Level(player, game_over)
-
-
-score = Score(player)
 
 
 def main():
@@ -43,6 +43,7 @@ def main():
         level.update(dt)
         player.update()
         score.update(dt)
+        game_over.update(dt)
 
         level.draw(screen)
         player.draw(screen)
