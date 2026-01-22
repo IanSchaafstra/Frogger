@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 pygame.init()
 
@@ -34,24 +35,24 @@ class Player:
         else:
             keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
             if keys[pygame.K_w]:
-                self.pos.y -= 64
+                self.pos.y -= TILE_SIZE
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 0)
             if keys[pygame.K_s]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 180)
-                self.pos.y += 64
-                if self.pos.y > 960 - self.rect.width:
-                    self.pos.y -= 64
+                self.pos.y += TILE_SIZE
+                if self.pos.y > SCREEN_HEIGHT - self.rect.width:
+                    self.pos.y -= TILE_SIZE
             if keys[pygame.K_a]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
-                self.pos.x -= 64
+                self.pos.x -= TILE_SIZE
                 if self.pos.x < 0:
-                    self.pos.x += 64
+                    self.pos.x += TILE_SIZE
             if keys[pygame.K_d]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, -90)
-                self.pos.x += 64
-                if self.pos.x > 1280 - self.rect.width:
-                    self.pos.x -= 64
-            self.rect = pygame.Rect(self.pos.x, self.pos.y, 64, 64)
+                self.pos.x += TILE_SIZE
+                if self.pos.x > SCREEN_WIDTH - self.rect.width:
+                    self.pos.x -= TILE_SIZE
+            self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
             self.update_score()
 
     def move_with_log(self, log_speed):
@@ -60,8 +61,8 @@ class Player:
         if self.pos.x < 0:
             self.pos.x = 0
             self.is_alive = False  # Of direct resetten
-        elif self.pos.x > 1280 - 64:  # 64 = player breedte
-            self.pos.x = 1280 - 64
+        elif self.pos.x > SCREEN_WIDTH - TILE_SIZE:  # 64 = player breedte
+            self.pos.x = SCREEN_WIDTH - TILE_SIZE
             self.is_alive = False
 
         self.rect.x = int(self.pos.x)
@@ -79,7 +80,7 @@ class Player:
             self._score_marker = self.pos.y
 
     def reset_player(self):
-        self.pos = pygame.Vector2(1280 // 2, 960 - 64)
+        self.pos = pygame.Vector2(SCREEN_WIDTH // 2, SCREEN_HEIGHT - TILE_SIZE)
         self.rect.topleft = (self.pos.x, self.pos.y)  # Update rect position
         self._score_marker = self.pos.y
         self.game_over = False
@@ -87,7 +88,9 @@ class Player:
 
     def reset_after_death(self):
         self._score = 0
-        self.pos = pygame.Vector2(1280 // 2, 960 - 64)  # reset position
+        self.pos = pygame.Vector2(
+            SCREEN_WIDTH // 2, SCREEN_HEIGHT - TILE_SIZE
+        )  # reset position
         self.rect.topleft = (self.pos.x, self.pos.y)
         self._score_marker = self.pos.y
         self.is_alive = True
