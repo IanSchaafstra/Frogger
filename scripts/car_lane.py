@@ -2,6 +2,7 @@ import pygame
 import random
 import os
 from car import Car
+from constants import SCREEN_WIDTH
 
 class CarLane:
     speed = 200.0
@@ -24,12 +25,12 @@ class CarLane:
 
     def init_start_cars(self):
         x_pos = -128.0
-        while x_pos < 1280:
+        while x_pos < SCREEN_WIDTH:
             x_pos += random.randint(CarLane._min_time_between_cars, CarLane._max_time_between_cars) / 1000 * CarLane.speed * self.speed_multiplier
             self.cars.append(Car(x_pos, self.y, self.driving_rightwards, CarLane.speed * self.speed_multiplier))
         if not self.driving_rightwards:
             self.cars.reverse()
-            self.time_until_next_car = (x_pos - 1280) / CarLane.speed / self.speed_multiplier
+            self.time_until_next_car = (x_pos - SCREEN_WIDTH) / CarLane.speed / self.speed_multiplier
 
     def update(self, dt: float):
         # update cars
@@ -39,7 +40,7 @@ class CarLane:
         # remove offscreen cars
         if len(self.cars) > 0:
             first_car = self.cars[0]
-            if first_car.hitbox.right < 0 or first_car.hitbox.left > 1280:
+            if first_car.hitbox.right < 0 or first_car.hitbox.left > SCREEN_WIDTH:
                 self.cars.remove(first_car)
 
         # add new cars
@@ -48,13 +49,13 @@ class CarLane:
             if self.driving_rightwards:
                 self.cars.append(Car(-128, self.y, True, CarLane.speed * self.speed_multiplier))
             else:
-                self.cars.append(Car(1280, self.y, False, CarLane.speed * self.speed_multiplier))
+                self.cars.append(Car(SCREEN_WIDTH, self.y, False, CarLane.speed * self.speed_multiplier))
             self.time_until_next_car += random.randint(CarLane._min_time_between_cars, CarLane._max_time_between_cars) / 1000
 
     def draw(self, surface: pygame.Surface):
         #road
         tile_width = self.road_image.get_width()
-        for x in range(0, 1280, tile_width):
+        for x in range(0, SCREEN_WIDTH, tile_width):
             surface.blit(self.road_image, (x, self.y))
 
         #cars
