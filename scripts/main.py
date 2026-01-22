@@ -12,6 +12,7 @@ SCREENX = 1280
 SCREENY = 960
 SCREEN_RES = pygame.Vector2(SCREENX, SCREENY)  # Screen resolution
 screen = pygame.display.set_mode(SCREEN_RES)
+pygame.display.set_caption("Frogger")
 clock = pygame.time.Clock()
 
 player = Player(
