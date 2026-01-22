@@ -35,10 +35,15 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and game_over.game_over:
-                    level.restart()
-                    score.reset()
+                # if event.type == pygame.KEYDOWN:
+                #    if event.key == pygame.K_SPACE and game_over.game_over:
+                #        level.restart()
+                #        score.reset()
+
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_SPACE] and level.game_over:
+            level.restart()
+            score.reset()
 
         level.update(dt)
         player.update()
