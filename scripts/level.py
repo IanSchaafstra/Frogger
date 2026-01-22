@@ -5,13 +5,14 @@ from water_lane import WaterLane
 from player import Player
 from gameover import GameOver
 import random
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
 class Level:
-    def __init__(self, player: Player, game_over: GameOver, screen_size=(1280, 960)):
+    def __init__(self, player: Player, game_over: GameOver):
         self.player = player
         self.gameover = game_over
-        self.screen_width, self.screen_height = screen_size
+        #self.screen_width, self.screen_height = screen_size
 
         self.background_color = (0, 100, 0)  # Dark green
         self.startfinish_color = (0, 255, 0)  # green
@@ -21,8 +22,8 @@ class Level:
         #self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
         #self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
 
-        self.finish_zone = pygame.Rect(0, 0, self.screen_width, 50)
-        self.start_zone = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
+        self.finish_zone = pygame.Rect(0, 0, SCREEN_WIDTH, 50)
+        self.start_zone = pygame.Rect(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50)
 
         self.car_lanes: list[CarLane] = []
         self.water_lanes: list[WaterLane] = []
@@ -78,7 +79,7 @@ class Level:
 
         # load new lanes
         # every {lane_count_scaling} score add 1 water or car lane
-        open_lanes = list(range(64, 960 - 64, 64))
+        open_lanes = list(range(TILE_SIZE, SCREEN_HEIGHT - TILE_SIZE, TILE_SIZE))
         level_difficulty = 200 + score
         lane_count_scaling = 50
         while level_difficulty > random.randint(0, lane_count_scaling) and len(open_lanes) >= 1:
@@ -90,7 +91,7 @@ class Level:
         # remove multi empty lanes
         previus_open_lane = 0
         for open_lane in open_lanes:
-            if open_lane == previus_open_lane + 64:
+            if open_lane == previus_open_lane + TILE_SIZE:
                 self.generate_lane(open_lane)
             else:
                 previus_open_lane = open_lane

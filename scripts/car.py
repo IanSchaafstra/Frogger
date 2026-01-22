@@ -1,6 +1,7 @@
 import pygame
 import os
 from pygame import Rect, Color
+from constants import TILE_SIZE
 
 class Car:
     def __init__(self, x: int, y: int, driving_rightwards: bool, speed: float):
@@ -14,7 +15,7 @@ class Car:
         self.sprite = pygame.image.load(self.path)
         if driving_rightwards:
             self.sprite = pygame.transform.flip(self.sprite, True, False)
-        self.hitbox = Rect(x, y, 128, 64)
+        self.hitbox = Rect(x, y, TILE_SIZE * 2, TILE_SIZE)
         self.driving_rightwards = driving_rightwards
         self.speed = speed
 
