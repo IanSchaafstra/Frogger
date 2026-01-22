@@ -8,7 +8,10 @@ from player import Player
 class GameOver:
     def __init__(self):
         if os.name == "nt":
-            self.path = os.path.join("assets", "Gameover.png")
+            self.path_game_over = os.path.join("assets", "Gameover.png")
+            self.path_score = os.path.join("assets", "Score.png")
+            self.path_press_space = os.path.join("assets", "PressSpace.png")
+            self.path_press_a = os.path.join("assets", "PressA.png")
         elif os.name == "posix":
             try:
                 self.path_game_over = os.path.join("..", "assets", "Gameover.png")
@@ -17,7 +20,10 @@ class GameOver:
                 self.path_press_a = os.path.join("..", "assets", "PressA.png")
             except FileNotFoundError:
                 try:
-                    self.path = os.path.join("assets", "Gameover.png")
+                    self.path_game_over = os.path.join("assets", "Gameover.png")
+                    self.path_score = os.path.join("assets", "Score.png")
+                    self.path_press_space = os.path.join("assets", "PressSpace.png")
+                    self.path_press_a = os.path.join("assets", "PressA.png")
                 except FileNotFoundError:
                     print("File Gameover.png could not be loaded. Exiting.")
                     sys.exit()
@@ -36,6 +42,8 @@ class GameOver:
 
     def reset(self):
         self.game_over = False
+        self.curtain = 0
+        self.timer = 0
 
     def draw(self, screen: pygame.Surface):
         if self.game_over:
