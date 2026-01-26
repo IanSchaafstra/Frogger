@@ -7,7 +7,7 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class GameOver:
-    def __init__(self, player: Player):
+    def __init__(self, player: Player, highscore):
         if os.name == "nt":
             self.path_game_over = os.path.join("assets", "Gameover.png")
             self.path_score = os.path.join("assets", "Score.png")
@@ -44,6 +44,7 @@ class GameOver:
         self.curtainRect = pygame.Rect((0, 0), (SCREEN_WIDTH, 0))
         self.timer = 0
         self.player = player
+        self.player = highscore
         self.n_points = self.player.get_score()
 
     def set_game_over(self):
