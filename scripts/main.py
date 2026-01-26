@@ -10,8 +10,8 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 pygame.init()
 FPS = 60
-#SCREENX = 1280
-#SCREENY = 960
+# SCREENX = 1280
+# SCREENY = 960
 SCREEN_RES = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)  # Screen resolution
 screen = pygame.display.set_mode(SCREEN_RES)
 pygame.display.set_caption("Frogger")
@@ -24,7 +24,7 @@ highscore = HighScore()
 score = Score(player, highscore)
 
 
-game_over = GameOver(highscore, player)
+game_over = GameOver(player, highscore)
 
 level = Level(player, game_over, highscore)
 
