@@ -1,5 +1,6 @@
 import pygame
 import os
+from constants import SCREEN_WIDTH
 
 class Log:
     def __init__(self, x, y):
@@ -13,16 +14,16 @@ class Log:
         
         self.rect = self.image.get_rect(topleft=(x, y))
         
-    def update(self, speed_x, screen_width):
+    def update(self, speed_x):
         self.rect.x += speed_x
         
         # Wrap around screen
         if speed_x > 0:
-            if self.rect.left > screen_width:
+            if self.rect.left > SCREEN_WIDTH:
                 self.rect.right = 0
         else:
             if self.rect.right < 0:
-                self.rect.left = screen_width
+                self.rect.left = SCREEN_WIDTH
     
     def draw(self, screen):
         screen.blit(self.image, self.rect)

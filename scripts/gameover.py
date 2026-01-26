@@ -3,10 +3,11 @@ import sys
 import os
 
 from player import Player
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class GameOver:
-    def __init__(self, player: Player):
+    def __init__(self, player: Player, highscore):
         if os.name == "nt":
             self.path_game_over = os.path.join("assets", "Gameover.png")
             self.path_score = os.path.join("assets", "Score.png")
@@ -40,9 +41,10 @@ class GameOver:
         self.rect = self.image_game_over.get_rect()
         self.game_over = False
         self.curtain = 0
-        self.curtainRect = pygame.Rect((0, 0), (1280, 0))
+        self.curtainRect = pygame.Rect((0, 0), (SCREEN_WIDTH, 0))
         self.timer = 0
         self.player = player
+        self.player = highscore
         self.n_points = self.player.get_score()
 
     def set_game_over(self):
@@ -55,7 +57,7 @@ class GameOver:
 
     def update(self, dt: float):
         if self.game_over:
-            if self.curtain < 970:
+            if self.curtain < SCREEN_HEIGHT + 20:
                 self.curtain += 1000 * dt
 
             self.timer += dt
@@ -64,10 +66,10 @@ class GameOver:
         self.n_points = self.player.get_score()
         score_surf = self.font.render(str(self.player.get_score()), False, "white")
         if self.game_over:
-            if self.curtain < 970:
-                self.curtainRect = pygame.Rect((0, 0), (1280, self.curtain))
+            if self.curtain < SCREEN_HEIGHT + 20:
+                self.curtainRect = pygame.Rect((0, 0), (SCREEN_WIDTH, self.curtain))
             pygame.draw.rect(screen, "black", self.curtainRect)
-            if self.curtain > 960:
+            if self.curtain > SCREEN_HEIGHT:
                 screen.blit(self.image_game_over, self.rect)
                 if self.timer > 1.5:
                     screen.blit(self.image_score, self.image_score.get_rect())

@@ -4,24 +4,29 @@ from player import Player
 from level import Level
 from score import Score
 from gameover import GameOver
+from highscore import HighScore
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
 pygame.init()
 FPS = 60
-SCREENX = 1280
-SCREENY = 960
-SCREEN_RES = pygame.Vector2(SCREENX, SCREENY)  # Screen resolution
+#SCREENX = 1280
+#SCREENY = 960
+SCREEN_RES = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)  # Screen resolution
 screen = pygame.display.set_mode(SCREEN_RES)
+pygame.display.set_caption("Frogger")
 clock = pygame.time.Clock()
 
 player = Player(
-    pygame.Vector2(SCREENX / 2 - 32, SCREENY - 64)
+    pygame.Vector2(SCREEN_WIDTH / 2 - TILE_SIZE / 2, SCREEN_HEIGHT - TILE_SIZE)
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
-score = Score(player)
+highscore = HighScore()
+score = Score(player, highscore)
 
-game_over = GameOver(player)
 
-level = Level(player, game_over, SCREEN_RES)
+game_over = GameOver(highscore, player)
+
+level = Level(player, game_over, highscore)
 
 
 def main():
@@ -33,10 +38,15 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and game_over.game_over:
-                    level.restart()
-                    score.reset()
+                # if event.type == pygame.KEYDOWN:
+                #    if event.key == pygame.K_SPACE and game_over.game_over:
+                #        level.restart()
+                #        score.reset()
+
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_SPACE] and level.game_over:
+            level.restart()
+            score.reset()
 
         level.update(dt)
         player.update()
