@@ -16,6 +16,10 @@ class GameOver:
             self.path_press_a = os.path.join("assets", "PressA.png")
             self.path_font = os.path.join("assets", "fontPixel.ttf")
             self.font = pygame.Font(self.path_font, size=120)
+            self.game_over_sound_path = os.path.join("assets", "sounds", "GameOver.wav")
+            self.item_sound_path = os.path.join(
+                "assets", "sounds", "GameOverItemAppear.wav"
+            )
         elif os.name == "posix":
             try:
                 self.path_game_over = os.path.join("..", "assets", "Gameover.png")
