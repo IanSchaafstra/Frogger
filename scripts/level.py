@@ -86,9 +86,14 @@ class Level:
 
         # load new lanes
         # every {lane_count_scaling} score add 1 water or car lane
-        open_lanes = list(range(TILE_SIZE, SCREEN_HEIGHT - TILE_SIZE, TILE_SIZE))
-        level_difficulty = 200 + score
+        open_lanes = list(range(TILE_SIZE, SCREEN_HEIGHT - TILE_SIZE * 3, TILE_SIZE))
         lane_count_scaling = 50
+        level_difficulty = 200 + score - lane_count_scaling
+
+        # always fill third lane
+        self.generate_lane(SCREEN_HEIGHT - TILE_SIZE * 3)
+
+        # randomly fill other lanes
         while (
             level_difficulty > random.randint(0, lane_count_scaling)
             and len(open_lanes) >= 1
