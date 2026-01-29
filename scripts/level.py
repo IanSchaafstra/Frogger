@@ -87,11 +87,6 @@ class Level:
                     print("you won")
                     # sould trigger win screen instead
                     self.player_death()
-                    # final_score = self.player.get_score()
-                    # self.player.reset_after_death()
-                    # self.set_game_over(final_score)
-                    # self.player.set_game_over()
-                    # self.gameover.set_game_over()
                 else:
                     self.player.reset_player()
                     self.generate_level(self.player.get_score())
@@ -175,12 +170,7 @@ class Level:
         if on_water and not on_log:
             print("Player drowned!")
             self.player_death()
-            # final_score = self.player.get_score()
-            # self.player.reset_after_death()
             self.splash.play()
-            # self.set_game_over(final_score)
-            # self.player.set_game_over()
-            # self.gameover.set_game_over()
 
     def check_collisions(self):
         if self.game_over:
@@ -193,12 +183,7 @@ class Level:
                 # hit car code
                 print("Player hit by car!")
                 self.player_death()
-                # final_score = self.player.get_score()
-                # self.player.reset_after_death()
                 self.car_crash.play()
-                # self.set_game_over(final_score)
-                # self.player.set_game_over()
-                # self.gameover.set_game_over()
     
     def player_death(self):
         self.player.lose_live()
