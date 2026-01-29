@@ -6,6 +6,7 @@ from score import Score
 from gameover import GameOver
 from highscore import HighScore
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
+from lives_counter import LivesCounter
 
 
 pygame.init()
@@ -22,6 +23,7 @@ player = Player(
 )  # location is defined in a not-so-neat manner, subject to change. Player starts out in the bottom-middle of the screen.
 highscore = HighScore()
 score = Score(player, highscore)
+lives_counter = LivesCounter(player)
 
 
 game_over = GameOver(player, highscore)
@@ -56,6 +58,7 @@ def main():
         level.draw(screen)
         player.draw(screen)
         score.draw(screen)
+        lives_counter.draw(screen)
         game_over.draw(screen)
 
         pygame.display.update()
