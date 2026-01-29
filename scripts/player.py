@@ -31,9 +31,10 @@ class Player:
         self._score_marker = self.pos.y
         self.is_alive = True
         self.game_over = False
+        self.freeze = False
 
     def update(self):
-        if self.game_over:
+        if self.game_over or self.freeze:
             return
         else:
             keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
@@ -59,7 +60,7 @@ class Player:
                 if self.pos.x > SCREEN_WIDTH - self.rect.width:
                     self.pos.x -= TILE_SIZE
                 self.hop_sound.play()
-            #skip level
+            # skip level
             if keys[pygame.K_p] and DEVELOPMENT_MODE:
                 self._score += 13
                 self.pos.y = 0
@@ -68,8 +69,8 @@ class Player:
             self.rect = pygame.Rect(
                 self.pos.x + HITBOX_SHRINK,
                 self.pos.y + HITBOX_SHRINK,
-                TILE_SIZE - 2 * HITBOX_SHRINK, # 52x wide
-                TILE_SIZE - 2 * HITBOX_SHRINK, # 52px high (was 64x64)
+                TILE_SIZE - 2 * HITBOX_SHRINK,  # 52x wide
+                TILE_SIZE - 2 * HITBOX_SHRINK,  # 52px high (was 64x64)
             )
             # self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
             self.update_score()
@@ -117,3 +118,6 @@ class Player:
 
     def set_game_over(self):
         self.game_over = True
+
+    def set_freeze(self, state: bool):
+        self.freeze = state
