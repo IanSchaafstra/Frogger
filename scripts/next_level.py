@@ -11,7 +11,7 @@ class NextLevel:
         self.font = pygame.Font(self.font_path, size=40)
         self.font
 
-        self.curtain_mark = SCREEN_HEIGHT
+        self.curtain_mark = SCREEN_HEIGHT // 2
         self.transition = True
         self.timer = 0.0
         self.post_timer = 0.0
@@ -43,7 +43,7 @@ class NextLevel:
 
         if self.post_transition:
             self.post_timer += dt
-            if self.post_timer < 0.5:
+            if self.post_timer < 0.3:
                 pass
             else:
                 self.post_transition = False
