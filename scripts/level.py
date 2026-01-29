@@ -6,17 +6,23 @@ from water_lane import WaterLane
 from player import Player
 from gameover import GameOver
 from highscore import HighScore
+from next_level import NextLevel
 import random
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
 class Level:
     def __init__(
-        self, player: Player, game_over: GameOver, highscore: HighScore = None
+        self,
+        player: Player,
+        game_over: GameOver,
+        highscore: HighScore,
+        nextlevel: NextLevel,
     ):
         self.player = player
         self.gameover = game_over
         self.highscore = highscore
+        self.nextlevel = nextlevel
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
 
@@ -63,14 +69,23 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.game_over = False
+        self.transition = True
 
         self.generate_level(self.player.get_score())
 
         self.music.play(loops=-1)
 
     def update(self, dt):
+        old_transition = self.transition
+        self.transition = self.nextlevel.get_transition()
+        if old_transition != self.transition and old_transition:
+            self.generate_level(self.player.get_score())
+        self.player.set_freeze(self.transition)
         if self.game_over:
             self.music.stop()
+            self.nextlevel.reset_level()
+            return
+        elif self.transition:
             return
         else:
             # Hier zou je enemies/platform logic updaten
@@ -91,8 +106,16 @@ class Level:
             on_finish = self.player.rect.colliderect(self.finish_zone)
             if on_finish and not self._on_finish_last_frame:
                 print("Finished!")
-                self.player.reset_player()
-                self.generate_level(self.player.get_score())
+                if self.player.get_score() // 14 == 20:
+                    print("you won")
+                    # sould trigger win screen instead
+                    self.player_death()
+                else:
+                    self.nextlevel.set_transition()
+                    self.nextlevel.increase_level()
+                    self.player.reset_player()
+                    # self.generate_level(self.player.get_score())
+                    # This line has been moved to the top of the update method, so that the level gets generated without the player seeing it.
             self._on_finish_last_frame = on_finish
 
     def clear_lanes(self):
@@ -172,12 +195,8 @@ class Level:
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
             print("Player drowned!")
-            final_score = self.player.get_score()
-            # self.player.reset_after_death()
+            self.player_death()
             self.splash.play()
-            self.set_game_over(final_score)
-            self.player.set_game_over()
-            self.gameover.set_game_over()
 
     def check_collisions(self):
         if self.game_over:
@@ -189,12 +208,20 @@ class Level:
             ):
                 # hit car code
                 print("Player hit by car!")
-                final_score = self.player.get_score()
-                # self.player.reset_after_death()
+                self.player_death()
                 self.car_crash.play()
-                self.set_game_over(final_score)
-                self.player.set_game_over()
-                self.gameover.set_game_over()
+    
+    def player_death(self):
+        self.player.lose_live()
+        if self.player.get_lives() <= 0:
+            print("game over")
+            final_score = self.player.get_score()
+            self.set_game_over(final_score)
+            self.player.set_game_over()
+            self.gameover.set_game_over()
+        else:
+            print(f"lives left: {self.player.get_lives()}")
+            self.player.reset_player()
 
     def draw(self, screen):
         # grass

@@ -1,7 +1,7 @@
 import pygame
 import os
 import sys
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, DEVELOPMENT_MODE
 
 pygame.init()
 
@@ -29,11 +29,13 @@ class Player:
 
         self._score = 0
         self._score_marker = self.pos.y
+        self._lives = 3
         self.is_alive = True
         self.game_over = False
+        self.freeze = False
 
     def update(self):
-        if self.game_over:
+        if self.game_over or self.freeze:
             return
         else:
             keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
@@ -59,14 +61,17 @@ class Player:
                 if self.pos.x > SCREEN_WIDTH - self.rect.width:
                     self.pos.x -= TILE_SIZE
                 self.hop_sound.play()
-            self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
+            # skip level
+            if keys[pygame.K_p] and DEVELOPMENT_MODE:
+                self._score += 13
+                self.pos.y = 0
 
             HITBOX_SHRINK = 6
             self.rect = pygame.Rect(
                 self.pos.x + HITBOX_SHRINK,
                 self.pos.y + HITBOX_SHRINK,
-                TILE_SIZE - 2 * HITBOX_SHRINK, # 52x wide
-                TILE_SIZE - 2 * HITBOX_SHRINK, # 52px high (was 64x64)
+                TILE_SIZE - 2 * HITBOX_SHRINK,  # 52x wide
+                TILE_SIZE - 2 * HITBOX_SHRINK,  # 52px high (was 64x64)
             )
             # self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
             self.update_score()
@@ -95,6 +100,12 @@ class Player:
             self._score += 1
             self._score_marker = self.pos.y
 
+    def get_lives(self) -> int:
+        return self._lives
+    
+    def lose_live(self):
+        self._lives -= 1
+
     def reset_player(self):
         self.pos = pygame.Vector2(SCREEN_WIDTH // 2, SCREEN_HEIGHT - TILE_SIZE)
         self.rect.topleft = (self.pos.x, self.pos.y)  # Update rect position
@@ -104,6 +115,7 @@ class Player:
 
     def reset_after_death(self):
         self._score = 0
+        self._lives = 3
         self.pos = pygame.Vector2(
             SCREEN_WIDTH // 2, SCREEN_HEIGHT - TILE_SIZE
         )  # reset position
@@ -114,3 +126,6 @@ class Player:
 
     def set_game_over(self):
         self.game_over = True
+
+    def set_freeze(self, state: bool):
+        self.freeze = state
