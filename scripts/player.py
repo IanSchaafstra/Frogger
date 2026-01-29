@@ -1,7 +1,7 @@
 import pygame
 import os
 import sys
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, DEVELOPMENT_MODE
 
 pygame.init()
 
@@ -59,7 +59,10 @@ class Player:
                 if self.pos.x > SCREEN_WIDTH - self.rect.width:
                     self.pos.x -= TILE_SIZE
                 self.hop_sound.play()
-            self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
+            #skip level
+            if keys[pygame.K_p] and DEVELOPMENT_MODE:
+                self._score += 13
+                self.pos.y = 0
 
             HITBOX_SHRINK = 6
             self.rect = pygame.Rect(
