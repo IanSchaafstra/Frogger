@@ -11,8 +11,10 @@ class Player:
         self.pos = location
         if os.name == "posix":
             self.path = os.path.join("..", "assets", "Frog.png")
+            self.hop_sound_path = os.path.join("..", "assets", "sounds", "Hop.wav")
         elif os.name == "nt":
             self.path = os.path.join("assets", "Frog.png")
+            self.hop_sound_path = os.path.join("assets", "sounds", "Hop.wav")
         else:
             print("Error with asset loading, please report")
             sys.exit()
@@ -23,6 +25,7 @@ class Player:
         self.sprite = pygame.image.load(self.path)
         self.rot_sprite = self.sprite
         self.rect = self.sprite.get_rect(topleft=self.pos)
+        self.hop_sound = pygame.Sound(self.hop_sound_path)
 
         self._score = 0
         self._score_marker = self.pos.y
@@ -37,26 +40,38 @@ class Player:
             if keys[pygame.K_w]:
                 self.pos.y -= TILE_SIZE
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 0)
+                self.hop_sound.play()
             if keys[pygame.K_s]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 180)
                 self.pos.y += TILE_SIZE
                 if self.pos.y > SCREEN_HEIGHT - self.rect.width:
                     self.pos.y -= TILE_SIZE
+                self.hop_sound.play()
             if keys[pygame.K_a]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
                 self.pos.x -= TILE_SIZE
                 if self.pos.x < 0:
                     self.pos.x += TILE_SIZE
+                self.hop_sound.play()
             if keys[pygame.K_d]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, -90)
                 self.pos.x += TILE_SIZE
                 if self.pos.x > SCREEN_WIDTH - self.rect.width:
                     self.pos.x -= TILE_SIZE
+                self.hop_sound.play()
             #skip level
             if keys[pygame.K_p] and DEVELOPMENT_MODE:
                 self._score += 13
                 self.pos.y = 0
-            self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
+
+            HITBOX_SHRINK = 6
+            self.rect = pygame.Rect(
+                self.pos.x + HITBOX_SHRINK,
+                self.pos.y + HITBOX_SHRINK,
+                TILE_SIZE - 2 * HITBOX_SHRINK, # 52x wide
+                TILE_SIZE - 2 * HITBOX_SHRINK, # 52px high (was 64x64)
+            )
+            # self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
             self.update_score()
 
     def move_with_log(self, log_speed):

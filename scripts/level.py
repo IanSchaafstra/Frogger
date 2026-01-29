@@ -11,20 +11,33 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
 class Level:
-    def __init__(self, player: Player, game_over: GameOver, highscore: HighScore = None):
+    def __init__(
+        self, player: Player, game_over: GameOver, highscore: HighScore = None
+    ):
         self.player = player
         self.gameover = game_over
         self.highscore = highscore
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
 
-        #textures
+        # textures
         script_dir = os.path.dirname(__file__)
-        grass_image_path = os.path.join(script_dir, '..', 'assets', 'Grass.png')
+        grass_image_path = os.path.join(script_dir, "..", "assets", "Grass.png")
         self.grass_image = pygame.image.load(grass_image_path).convert_alpha()
 
-        finish_image_path = os.path.join(script_dir, '..', 'assets', 'Finish.png')
+        finish_image_path = os.path.join(script_dir, "..", "assets", "Finish.png")
         self.finish_image = pygame.image.load(finish_image_path).convert_alpha()
+
+        # sounds
+        self.splash_path = os.path.join(
+            script_dir, "..", "assets", "sounds", "Splash.wav"
+        )
+        self.splash = pygame.Sound(self.splash_path)
+
+        self.car_crash_path = os.path.join(
+            script_dir, "..", "assets", "sounds", "CarCrash.wav"
+        )
+        self.car_crash = pygame.Sound(self.car_crash_path)
 
         # self.platforms = []
         # self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
@@ -162,6 +175,7 @@ class Level:
             print("Player drowned!")
             final_score = self.player.get_score()
             # self.player.reset_after_death()
+            self.splash.play()
             self.set_game_over(final_score)
             self.player.set_game_over()
             self.gameover.set_game_over()
@@ -178,12 +192,13 @@ class Level:
                 print("Player hit by car!")
                 final_score = self.player.get_score()
                 # self.player.reset_after_death()
+                self.car_crash.play()
                 self.set_game_over(final_score)
                 self.player.set_game_over()
                 self.gameover.set_game_over()
 
     def draw(self, screen):
-        #grass
+        # grass
         self.draw_grass(screen)
 
         # Start/Finish zones
@@ -212,7 +227,9 @@ class Level:
         #
 
     def draw_grass(self, screen):
-        for y in range(self.finish_image.get_height(), SCREEN_HEIGHT, self.grass_image.get_height()):
+        for y in range(
+            self.finish_image.get_height(), SCREEN_HEIGHT, self.grass_image.get_height()
+        ):
             for x in range(0, SCREEN_WIDTH, self.grass_image.get_width()):
                 screen.blit(self.grass_image, (x, y))
 
@@ -230,4 +247,3 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.generate_level(self.player.get_score())
-
