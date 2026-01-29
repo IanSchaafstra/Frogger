@@ -97,16 +97,16 @@ class Level:
             on_finish = self.player.rect.colliderect(self.finish_zone)
             if on_finish and not self._on_finish_last_frame:
                 print("Finished!")
-                if self.player.get_score() // 14 == 20:
-                    print("you won")
+                # if self.player.get_score() // 14 == 20:
+                #    print("you won")
                     # sould trigger win screen instead
-                    self.player_death()
-                else:
-                    self.nextlevel.set_transition()
-                    self.nextlevel.increase_level()
-                    self.player.reset_player()
-                    # self.generate_level(self.player.get_score())
-                    # This line has been moved to the top of the update method, so that the level gets generated without the player seeing it.
+                #    self.player_death()
+                # else:
+                self.nextlevel.set_transition()
+                self.nextlevel.increase_level()
+                self.player.reset_player()
+                # self.generate_level(self.player.get_score())
+                # This line has been moved to the top of the update method, so that the level gets generated without the player seeing it.
             self._on_finish_last_frame = on_finish
 
     def clear_lanes(self):
