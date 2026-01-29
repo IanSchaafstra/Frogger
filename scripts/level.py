@@ -39,6 +39,11 @@ class Level:
         )
         self.car_crash = pygame.Sound(self.car_crash_path)
 
+        self.music_path = os.path.join(
+            script_dir, "..", "assets", "sounds", "FroggerBGM.wav"
+        )
+        self.music = pygame.Sound(self.music_path)
+
         # self.platforms = []
         # self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
         # self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
@@ -61,8 +66,11 @@ class Level:
 
         self.generate_level(self.player.get_score())
 
+        self.music.play(loops=-1)
+
     def update(self, dt):
         if self.game_over:
+            self.music.stop()
             return
         else:
             # Hier zou je enemies/platform logic updaten
@@ -238,3 +246,4 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.generate_level(self.player.get_score())
+        self.music.play(loops=-1)
