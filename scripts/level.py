@@ -48,7 +48,8 @@ class Level:
         self.music_path = os.path.join(
             script_dir, "..", "assets", "sounds", "FroggerBGM.wav"
         )
-        self.music = pygame.Sound(self.music_path)
+        self.music = pygame.mixer.music.load(self.music_path)
+        self.volume = pygame.mixer_music.get_volume()
 
         # self.platforms = []
         # self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
@@ -70,10 +71,12 @@ class Level:
         self._on_finish_last_frame = False
         self.game_over = False
         self.transition = True
+        self.first_transition = True
 
         self.generate_level(self.player.get_score())
 
-        self.music.play(loops=-1)
+        # self.music.play(loops=-1)
+        # pygame.mixer_music.play(loops=-1)
 
     def update(self, dt):
         old_transition = self.transition
@@ -82,12 +85,21 @@ class Level:
             self.generate_level(self.player.get_score())
         self.player.set_freeze(self.transition)
         if self.game_over:
-            self.music.stop()
+            pygame.mixer_music.stop()
             self.nextlevel.reset_level()
             return
         elif self.transition:
+            pygame.mixer_music.set_volume(0.2)
             return
         else:
+            if self.first_transition:
+                self.first_transition = False
+                pygame.mixer_music.play(loops=-1)
+            self.volume = pygame.mixer_music.get_volume()
+            if self.volume < 1:
+                self.volume += 0.05
+            pygame.mixer_music.set_volume(self.volume)
+            # pygame.mixer_music.set_volume(1)
             # Hier zou je enemies/platform logic updaten
             for car_lane in self.car_lanes:
                 car_lane.update(dt)
@@ -210,7 +222,7 @@ class Level:
                 print("Player hit by car!")
                 self.player_death()
                 self.car_crash.play()
-    
+
     def player_death(self):
         self.player.lose_live()
         if self.player.get_lives() <= 0:
@@ -273,4 +285,4 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.generate_level(self.player.get_score())
-        self.music.play(loops=-1)
+        pygame.mixer_music.play(loops=1)
