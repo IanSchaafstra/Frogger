@@ -101,11 +101,7 @@ class Level:
                 if self.player.get_score() // 14 == 20:
                     print("you won")
                     # sould trigger win screen instead
-                    final_score = self.player.get_score()
-                    # self.player.reset_after_death()
-                    self.set_game_over(final_score)
-                    self.player.set_game_over()
-                    self.gameover.set_game_over()
+                    self.player_death()
                 else:
                     self.nextlevel.set_transition()
                     self.nextlevel.increase_level()
@@ -191,12 +187,8 @@ class Level:
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
             print("Player drowned!")
-            final_score = self.player.get_score()
-            # self.player.reset_after_death()
+            self.player_death()
             self.splash.play()
-            self.set_game_over(final_score)
-            self.player.set_game_over()
-            self.gameover.set_game_over()
 
     def check_collisions(self):
         if self.game_over:
@@ -208,12 +200,20 @@ class Level:
             ):
                 # hit car code
                 print("Player hit by car!")
-                final_score = self.player.get_score()
-                # self.player.reset_after_death()
+                self.player_death()
                 self.car_crash.play()
-                self.set_game_over(final_score)
-                self.player.set_game_over()
-                self.gameover.set_game_over()
+    
+    def player_death(self):
+        self.player.lose_live()
+        if self.player.get_lives() <= 0:
+            print("game over")
+            final_score = self.player.get_score()
+            self.set_game_over(final_score)
+            self.player.set_game_over()
+            self.gameover.set_game_over()
+        else:
+            print(f"lives left: {self.player.get_lives()}")
+            self.player.reset_player()
 
     def draw(self, screen):
         # grass
