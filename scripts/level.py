@@ -6,17 +6,23 @@ from water_lane import WaterLane
 from player import Player
 from gameover import GameOver
 from highscore import HighScore
+from next_level import NextLevel
 import random
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
 class Level:
     def __init__(
-        self, player: Player, game_over: GameOver, highscore: HighScore = None
+        self,
+        player: Player,
+        game_over: GameOver,
+        highscore: HighScore,
+        nextlevel: NextLevel,
     ):
         self.player = player
         self.gameover = game_over
         self.highscore = highscore
+        self.nextlevel = nextlevel
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
 
@@ -58,11 +64,20 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.game_over = False
+        self.transition = True
 
         self.generate_level(self.player.get_score())
 
     def update(self, dt):
+        old_transition = self.transition
+        self.transition = self.nextlevel.get_transition()
+        if old_transition != self.transition and old_transition:
+            self.generate_level(self.player.get_score())
+        self.player.set_freeze(self.transition)
         if self.game_over:
+            self.nextlevel.reset_level()
+            return
+        elif self.transition:
             return
         else:
             # Hier zou je enemies/platform logic updaten
@@ -88,8 +103,11 @@ class Level:
                     # sould trigger win screen instead
                     self.player_death()
                 else:
+                    self.nextlevel.set_transition()
+                    self.nextlevel.increase_level()
                     self.player.reset_player()
-                    self.generate_level(self.player.get_score())
+                    # self.generate_level(self.player.get_score())
+                    # This line has been moved to the top of the update method, so that the level gets generated without the player seeing it.
             self._on_finish_last_frame = on_finish
 
     def clear_lanes(self):

@@ -5,6 +5,7 @@ from level import Level
 from score import Score
 from gameover import GameOver
 from highscore import HighScore
+from next_level import NextLevel
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 from lives_counter import LivesCounter
 
@@ -25,10 +26,12 @@ highscore = HighScore()
 score = Score(player, highscore)
 lives_counter = LivesCounter(player)
 
+nextlevel = NextLevel()
+
 
 game_over = GameOver(player, highscore)
 
-level = Level(player, game_over, highscore)
+level = Level(player, game_over, highscore, nextlevel)
 
 
 def main():
@@ -54,12 +57,14 @@ def main():
         player.update()
         score.update(dt)
         game_over.update(dt)
+        nextlevel.update(dt)
 
         level.draw(screen)
         player.draw(screen)
         score.draw(screen)
         lives_counter.draw(screen)
         game_over.draw(screen)
+        nextlevel.draw(screen)
 
         pygame.display.update()
         dt = clock.tick(FPS) / 1000  # delta time
