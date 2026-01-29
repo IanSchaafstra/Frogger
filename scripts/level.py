@@ -120,7 +120,7 @@ class Level:
                 print("Finished!")
                 # if self.player.get_score() // 14 == 20:
                 #    print("you won")
-                    # sould trigger win screen instead
+                # sould trigger win screen instead
                 #    self.player_death()
                 # else:
                 self.nextlevel.set_transition()
@@ -288,4 +288,4 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.generate_level(self.player.get_score())
-        pygame.mixer_music.play(loops=1)
+        self.first_transition = True
