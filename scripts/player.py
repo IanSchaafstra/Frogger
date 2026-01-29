@@ -52,7 +52,15 @@ class Player:
                 self.pos.x += TILE_SIZE
                 if self.pos.x > SCREEN_WIDTH - self.rect.width:
                     self.pos.x -= TILE_SIZE
-            self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
+
+            HITBOX_SHRINK = 6
+            self.rect = pygame.Rect(
+                self.pos.x + HITBOX_SHRINK,
+                self.pos.y + HITBOX_SHRINK,
+                TILE_SIZE - 2 * HITBOX_SHRINK, # 52x wide
+                TILE_SIZE - 2 * HITBOX_SHRINK, # 52px high (was 64x64)
+            )
+            # self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
             self.update_score()
 
     def move_with_log(self, log_speed):
