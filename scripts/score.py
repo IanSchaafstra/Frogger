@@ -14,7 +14,7 @@ class Score:
         if os.name == "posix":
             self.path = os.path.join("..", "assets", "fontPixel.ttf")
         elif os.name == "nt":
-            self.path = os.path.join("assets", "font.ttf")
+            self.path = os.path.join("assets", "fontPixel.ttf")
 
         self.font = pygame.font.Font(self.path, size=50)
 
@@ -40,4 +40,3 @@ class Score:
     def reset(self):
         self._score = 0
         self.player._score = 0
-
