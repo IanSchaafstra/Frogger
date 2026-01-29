@@ -67,7 +67,7 @@ class GameOver:
 
     def set_game_over(self):
         self.game_over = True
-        self.game_over_sound.play()
+        # self.game_over_sound.play()
 
     def reset(self):
         self.game_over = False
