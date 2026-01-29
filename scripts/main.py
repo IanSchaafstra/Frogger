@@ -52,6 +52,9 @@ def main():
         if keys[pygame.K_SPACE] and level.game_over:
             level.restart()
             score.reset()
+        if keys[pygame.K_ESCAPE] and level.game_over:
+            #self.next_state = "MENU"
+            pass
 
         level.update(dt)
         player.update()
