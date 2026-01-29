@@ -29,6 +29,7 @@ class Player:
 
         self._score = 0
         self._score_marker = self.pos.y
+        self._lives = 3
         self.is_alive = True
         self.game_over = False
 
@@ -98,6 +99,12 @@ class Player:
             self._score += 1
             self._score_marker = self.pos.y
 
+    def get_lives(self) -> int:
+        return self._lives
+    
+    def lose_live(self):
+        self._lives -= 1
+
     def reset_player(self):
         self.pos = pygame.Vector2(SCREEN_WIDTH // 2, SCREEN_HEIGHT - TILE_SIZE)
         self.rect.topleft = (self.pos.x, self.pos.y)  # Update rect position
@@ -107,6 +114,7 @@ class Player:
 
     def reset_after_death(self):
         self._score = 0
+        self._lives = 3
         self.pos = pygame.Vector2(
             SCREEN_WIDTH // 2, SCREEN_HEIGHT - TILE_SIZE
         )  # reset position
