@@ -75,7 +75,6 @@ class Level:
             self.generate_level(self.player.get_score())
         self.player.set_freeze(self.transition)
         if self.game_over:
-            self.nextlevel.reset_level()
             return
         elif self.transition:
             return
@@ -202,7 +201,7 @@ class Level:
                 print("Player hit by car!")
                 self.player_death()
                 self.car_crash.play()
-    
+
     def player_death(self):
         self.player.lose_live()
         if self.player.get_lives() <= 0:
@@ -260,6 +259,9 @@ class Level:
 
     def restart(self):
         self.game_over = False
+        self.transition = True
+        self.nextlevel.set_transition()
+        self.nextlevel.reset_level()
         self.player.reset_after_death()
         self.gameover.reset()
         self._on_start_last_frame = False
