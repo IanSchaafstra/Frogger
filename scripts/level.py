@@ -70,8 +70,12 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.game_over = False
+        self.dead = False
+        self.dead_timer = 0.0
         self.transition = True
         self.first_transition = True
+
+        self.dt = 0.0
 
         self.generate_level(self.player.get_score())
 
@@ -79,11 +83,20 @@ class Level:
         # pygame.mixer_music.play(loops=-1)
 
     def update(self, dt):
+        self.dt = dt  # dt is now global
         old_transition = self.transition
         self.transition = self.nextlevel.get_transition()
         if old_transition != self.transition and old_transition:
             self.generate_level(self.player.get_score())
         self.player.set_freeze(self.transition)
+        if self.dead:
+            if self.dead_timer < 2:
+                self.dead_timer += dt
+            else:
+                self.dead_timer = 0.0
+                self.dead = False
+                self.player.reset_player()
+            return
         if self.game_over:
             pygame.mixer_music.stop()
             self.nextlevel.reset_level()
@@ -233,7 +246,8 @@ class Level:
             self.gameover.set_game_over()
         else:
             print(f"lives left: {self.player.get_lives()}")
-            self.player.reset_player()
+            self.dead = True
+            # self.player.reset_player()
 
     def draw(self, screen):
         # grass
