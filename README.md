@@ -79,13 +79,13 @@ Help your frog cross the road and rivers safely! You have 3 lives, so if you get
       - audio files (sound effects, music)
   - **scripts/**
     - `main.py`        — game loop
-    - `constants.py`   — 
+    - `constants.py`   — store fixed values
     - `level.py`       — level setup and progression  
     - `player.py`      — player logic  
-    - `car.py`         — 
+    - `car.py`         — car logic and behavior
     - `car_lane.py`    — road lane behavior  
     - `water_lane.py`  — water lane behavior  
-    - `log.py`         —  
+    - `log.py`         — log logic and behavior
     - `score.py`       — score tracking  
     - `highscore.py`   — highscore logic 
     - `highscores.json` — highscore storage
