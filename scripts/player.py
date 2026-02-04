@@ -66,7 +66,9 @@ class Player:
                 self.hop_sound.play()
             # skip level
             if keys[pygame.K_p] and DEVELOPMENT_MODE:
-                self._score += 13
+                for i in range(int(self.pos.y // TILE_SIZE) - 1):
+                    self._score += int(100 * self._score_multiplier)
+                    self._score_multiplier += 0.1
                 self.pos.y = 0
 
             HITBOX_SHRINK = 6
