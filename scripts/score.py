@@ -10,6 +10,7 @@ class Score:
         self.player = player
         self.highscore = highscore
         self._score = 0
+        self._multiplier = player.get_modifier()
 
         if os.name == "posix":
             self.path = os.path.join("..", "assets", "fontPixel.ttf")
@@ -23,6 +24,8 @@ class Score:
 
         self._score = self.player.get_score()
 
+        self._multiplier = self.player.get_modifier()
+
         self.surface = self.font.render(
             f"Score: {self._score}", antialias=True, color="white"
         )
@@ -31,11 +34,16 @@ class Score:
             f"High Score: {current_high}", antialias=True, color="white"
         )
 
+        self.mult_surface = self.font.render(
+            f"multiplier: {self._multiplier}", antialias=True, color="white"
+        )
+
     def draw(self, screen: pygame.Surface):
-        screen.blit(self.surface, (50, 870))
+        screen.blit(self.surface, (50, 840))
         screen.blit(
             self.highscore_surface, (1280 - self.highscore_surface.width - 50, 870)
         )
+        screen.blit(self.mult_surface, (50, 890))
 
     def reset(self):
         self._score = 0
