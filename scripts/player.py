@@ -46,6 +46,7 @@ class Player:
         self.hop_sound = pygame.Sound(self.hop_sound_path)
 
         self._score = 0
+        self._score_multiplier = 1.0
         self._score_marker = self.pos.y
         self._lives = 3
         self.is_alive = True
@@ -78,6 +79,8 @@ class Player:
                 self.pos.y += TILE_SIZE
                 if self.pos.y > SCREEN_HEIGHT - self.rect.width:
                     self.pos.y -= TILE_SIZE
+                else:
+                    self._score_multiplier = 1.0
                 self.hop_sound.play()
             if keys[pygame.K_a]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
@@ -93,7 +96,9 @@ class Player:
                 self.hop_sound.play()
             # skip level
             if keys[pygame.K_p] and DEVELOPMENT_MODE:
-                self._score += 13
+                for i in range(int(self.pos.y // TILE_SIZE) - 1):
+                    self._score += int(100 * self._score_multiplier)
+                    self._score_multiplier += 0.1
                 self.pos.y = 0
 
             HITBOX_SHRINK = 6
@@ -128,7 +133,8 @@ class Player:
 
     def update_score(self):
         if self.pos.y < self._score_marker:
-            self._score += 1
+            self._score += int(100 * self._score_multiplier)
+            self._score_multiplier += 0.1
             self._score_marker = self.pos.y
 
     def get_lives(self) -> int:
@@ -136,6 +142,7 @@ class Player:
 
     def lose_live(self):
         self._lives -= 1
+        self._score_multiplier = 1.0
 
     def reset_player(self):
         self.pos = pygame.Vector2(SCREEN_WIDTH // 2, SCREEN_HEIGHT - TILE_SIZE)
