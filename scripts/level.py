@@ -90,7 +90,7 @@ class Level:
             self.generate_level(self.player.get_score())
         self.player.set_freeze(self.transition)
         if self.dead:
-            if self.dead_timer < 2:
+            if self.dead_timer < 1:
                 self.dead_timer += dt
             else:
                 self.dead_timer = 0.0
@@ -221,6 +221,7 @@ class Level:
         if on_water and not on_log:
             print("Player drowned!")
             self.player_death()
+            self.player.set_dying_type("splash")
             self.splash.play()
 
     def check_collisions(self):
@@ -234,6 +235,7 @@ class Level:
                 # hit car code
                 print("Player hit by car!")
                 self.player_death()
+                self.player.set_dying_type("crash")
                 self.car_crash.play()
 
     def player_death(self):
