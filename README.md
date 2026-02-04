@@ -80,8 +80,8 @@ Help your frog cross the road and rivers safely! You have 3 lives, so if you get
     - **sounds/**
       - audio files (sound effects, music)
   - **scripts/**
-    - `main.py` — application entry point  
-    - `constants.py` — global constants and configuration  
+    - `main.py` - # game loop
+    - `constants.py`
     - `inputhandling.py` — input and control handling  
     - `level.py` — level setup and progression  
     - `player.py` — player (frog) logic  
