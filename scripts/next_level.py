@@ -75,5 +75,8 @@ class NextLevel:
     def reset_level(self):
         self.n_level = 1
 
+    def get_level(self):
+        return self.n_level
+
     def get_transition(self) -> bool:
         return self.transition
