@@ -72,38 +72,33 @@ Help your frog cross the road and rivers safely! You have 3 lives, so if you get
 
 ## Project Structure
 
-## Project Structure
-
 - **frogger/**
   - **assets/**
-    - `*.png` — game sprites and textures  
-    - **sounds/**
+    - `*.png`          — game sprites and textures  
+    - **sounds/**      
       - audio files (sound effects, music)
   - **scripts/**
-    - `main.py` - # game loop
-    - `constants.py`
-    - `inputhandling.py` — input and control handling  
-    - `level.py` — level setup and progression  
-    - `player.py` — player (frog) logic  
-    - `car.py` — car entity logic  
-    - `car_lane.py` — road lane behavior  
-    - `water_lane.py` — water lane behavior  
-    - `log.py` — log entity logic  
-    - `score.py` — score tracking  
-    - `highscore.py` — highscore model  
-    - `highscores.py` — highscore storage and management  
-    - `gameover.py` — game over screen and logic
-  - `README.md` — project documentation  
+    - `main.py`        — game loop
+    - `constants.py`   — 
+    - `level.py`       — level setup and progression  
+    - `player.py`      — player logic  
+    - `car.py`         — 
+    - `car_lane.py`    — road lane behavior  
+    - `water_lane.py`  — water lane behavior  
+    - `log.py`         —  
+    - `score.py`       — score tracking  
+    - `highscore.py`   — highscore logic 
+    - `highscores.json` — highscore storage
+    - `gameover.py`    — game over screen and logic
+  - `README.md`        — project documentation  
   - `requirements.txt` — Python dependencies
-  - `.gitignore` - Ignore unnecessary files
-
+  - `.gitignore`       — Ignore unnecessary files
 
 ## Credits
 
 - Inspired by classic Frogger arcade game (1981)
 - All sprites, sounds and music created in-house
 - Made for Capgemini Python Project
-
 
 ## License
 
