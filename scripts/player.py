@@ -151,6 +151,9 @@ class Player:
         self.game_over = False
         self.is_alive = True
 
+    def get_modifier(self):
+        return str(round(self._score_multiplier, 2))
+
     def reset_after_death(self):
         self._score = 0
         self._lives = 3
