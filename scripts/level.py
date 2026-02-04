@@ -70,8 +70,12 @@ class Level:
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.game_over = False
+        self.dead = False
+        self.dead_timer = 0.0
         self.transition = True
         self.first_transition = True
+
+        self.dt = 0.0
 
         self.generate_level(self.player.get_score())
 
@@ -79,11 +83,20 @@ class Level:
         # pygame.mixer_music.play(loops=-1)
 
     def update(self, dt):
+        self.dt = dt  # dt is now global
         old_transition = self.transition
         self.transition = self.nextlevel.get_transition()
         if old_transition != self.transition and old_transition:
             self.generate_level(self.player.get_score())
         self.player.set_freeze(self.transition)
+        if self.dead:
+            if self.dead_timer < 1:
+                self.dead_timer += dt
+            else:
+                self.dead_timer = 0.0
+                self.dead = False
+                self.player.reset_player()
+            return
         if self.game_over:
             pygame.mixer_music.stop()
             self.nextlevel.reset_level()
@@ -111,13 +124,13 @@ class Level:
             self.check_collisions()
 
             on_start = self.player.rect.colliderect(self.start_zone)
-            if on_start and not self._on_start_last_frame:
-                print("Player on start zone")
+            # if on_start and not self._on_start_last_frame:
+            # print("Player on start zone")
             self._on_start_last_frame = on_start
 
             on_finish = self.player.rect.colliderect(self.finish_zone)
             if on_finish and not self._on_finish_last_frame:
-                print("Finished!")
+                # print("Finished!")
                 # if self.player.get_score() // 14 == 20:
                 #    print("you won")
                 # sould trigger win screen instead
@@ -206,8 +219,9 @@ class Level:
 
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
-            print("Player drowned!")
+            # print("Player drowned!")
             self.player_death()
+            self.player.set_dying_type("splash")
             self.splash.play()
 
     def check_collisions(self):
@@ -219,21 +233,23 @@ class Level:
                 != -1
             ):
                 # hit car code
-                print("Player hit by car!")
+                # print("Player hit by car!")
                 self.player_death()
+                self.player.set_dying_type("crash")
                 self.car_crash.play()
 
     def player_death(self):
         self.player.lose_live()
         if self.player.get_lives() <= 0:
-            print("game over")
+            # print("game over")
             final_score = self.player.get_score()
             self.set_game_over(final_score)
             self.player.set_game_over()
             self.gameover.set_game_over()
         else:
-            print(f"lives left: {self.player.get_lives()}")
-            self.player.reset_player()
+            # print(f"lives left: {self.player.get_lives()}")
+            self.dead = True
+            # self.player.reset_player()
 
     def draw(self, screen):
         # grass
@@ -275,8 +291,8 @@ class Level:
         self.game_over = True
         if self.highscore:
             new_hs = self.highscore.update(final_score)
-            if new_hs:
-                print(f"New High Score: {final_score}!")
+            # if new_hs:
+            # print(f"New High Score: {final_score}!")
 
     def restart(self):
         self.game_over = False

@@ -9,6 +9,7 @@ pygame.init()
 class Player:
     def __init__(self, location: pygame.Vector2) -> None:
         self.pos = location
+        script_dir = os.path.dirname(__file__)
         if os.name == "posix":
             self.path = os.path.join("..", "assets", "Frog.png")
             self.hop_sound_path = os.path.join("..", "assets", "sounds", "Hop.wav")
@@ -18,12 +19,29 @@ class Player:
         else:
             print("Error with asset loading, please report")
             sys.exit()
-        # if os.name == "posix":
-        #    self.sprite = pygame.image.load("../assets/Frog.png")
-        # elif os.name == "nt":
-        #    self.sprite = pygame.image.load("..\\assets\\Frog.png")
+            # if os.name == "posix":
+            #    self.sprite = pygame.image.load("../assets/Frog.png")
+            # elif os.name == "nt":
+            #    self.sprite = pygame.image.load("..\\assets\\Frog.png")
+        splash_dir = os.path.join(script_dir, "..", "assets", "FrogDrown")
+        self.splash_anim = [
+            pygame.image.load(os.path.join(splash_dir, "FrogDrown_0001.png")),
+            pygame.image.load(os.path.join(splash_dir, "FrogDrown_0002.png")),
+            pygame.image.load(os.path.join(splash_dir, "FrogDrown_0003.png")),
+            pygame.image.load(os.path.join(splash_dir, "FrogDrown_0004.png")),
+            pygame.image.load(os.path.join(splash_dir, "FrogDrown_0005.png")),
+            pygame.image.load(os.path.join(splash_dir, "FrogDrown_0006.png")),
+        ]
+        crash_dir = os.path.join(script_dir, "..", "assets", "FrogCrash")
+        self.crash_anim = [
+            pygame.image.load(os.path.join(crash_dir, "FrogCrash_0001.png")),
+            pygame.image.load(os.path.join(crash_dir, "FrogCrash_0002.png")),
+            pygame.image.load(os.path.join(crash_dir, "FrogCrash_0003.png")),
+            pygame.image.load(os.path.join(crash_dir, "FrogCrash_0004.png")),
+        ]
         self.sprite = pygame.image.load(self.path)
         self.rot_sprite = self.sprite
+        self.curr_sprite = self.sprite
         self.rect = self.sprite.get_rect(topleft=self.pos)
         self.hop_sound = pygame.Sound(self.hop_sound_path)
 
@@ -34,8 +52,20 @@ class Player:
         self.is_alive = True
         self.game_over = False
         self.freeze = False
+        self.dt = 0.0
 
-    def update(self):
+        self.dying = False
+        self.dead_timer = 0.0
+        self.dying_type = "None"
+
+    def update(self, dt: float):
+        self.dt = dt
+        if self.dying:
+            if self.dying_type == "splash":
+                self.splash_death()
+            elif self.dying_type == "crash":
+                self.crash_death()
+            return
         if self.game_over or self.freeze:
             return
         else:
@@ -78,6 +108,7 @@ class Player:
                 TILE_SIZE - 2 * HITBOX_SHRINK,  # 52x wide
                 TILE_SIZE - 2 * HITBOX_SHRINK,  # 52px high (was 64x64)
             )
+            self.curr_sprite = self.rot_sprite
             # self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
             self.update_score()
 
@@ -95,7 +126,7 @@ class Player:
 
     def draw(self, screen: pygame.Surface):
         # pygame.draw.rect(screen, "green", self.rect)
-        screen.blit(self.rot_sprite, self.pos)
+        screen.blit(self.curr_sprite, self.pos)
 
     def get_score(self) -> int:
         return self._score
@@ -108,7 +139,7 @@ class Player:
 
     def get_lives(self) -> int:
         return self._lives
-    
+
     def lose_live(self):
         self._lives -= 1
         self._score_multiplier = 1.0
@@ -130,6 +161,44 @@ class Player:
         self._score_marker = self.pos.y
         self.is_alive = True
         self.game_over = False
+
+    def splash_death(self):
+        self.dead_timer += self.dt
+        if self.dead_timer < 0.1:
+            self.curr_sprite = self.splash_anim[0]
+        elif self.dead_timer < 0.2:
+            self.curr_sprite = self.splash_anim[1]
+        elif self.dead_timer < 0.3:
+            self.curr_sprite = self.splash_anim[2]
+        elif self.dead_timer < 0.4:
+            self.curr_sprite = self.splash_anim[3]
+        elif self.dead_timer < 0.5:
+            self.curr_sprite = self.splash_anim[4]
+        elif self.dead_timer < 1.1:
+            self.curr_sprite = self.splash_anim[5]
+        else:
+            self.dying = False
+            self.dying_type = "None"
+            self.dead_timer = 0.0
+
+    def crash_death(self):
+        self.dead_timer += self.dt
+        if self.dead_timer < 0.1:
+            self.curr_sprite = self.crash_anim[0]
+        elif self.dead_timer < 0.2:
+            self.curr_sprite = self.crash_anim[1]
+        elif self.dead_timer < 0.3:
+            self.curr_sprite = self.crash_anim[2]
+        elif self.dead_timer < 1.1:
+            self.curr_sprite = self.crash_anim[3]
+        else:
+            self.dying = False
+            self.dying_type = "None"
+            self.dead_timer = 0.0
+
+    def set_dying_type(self, type: str):
+        self.dying = True
+        self.dying_type = type
 
     def set_game_over(self):
         self.game_over = True
