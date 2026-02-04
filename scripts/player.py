@@ -74,13 +74,11 @@ class Player:
                 self.pos.y -= TILE_SIZE
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 0)
                 self.hop_sound.play()
+                self._score_multiplier += 0.1
             if keys[pygame.K_s]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 180)
                 self.pos.y += TILE_SIZE
-                if self.pos.y > SCREEN_HEIGHT - self.rect.width:
-                    self.pos.y -= TILE_SIZE
-                else:
-                    self._score_multiplier = 1.0
+                self._score_multiplier = 1.0
                 self.hop_sound.play()
             if keys[pygame.K_a]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
