@@ -134,7 +134,7 @@ class Player:
     def update_score(self):
         if self.pos.y < self._score_marker:
             self._score += int(100 * self._score_multiplier)
-            self._score_multiplier += 0.1
+            # self._score_multiplier += 0.1
             self._score_marker = self.pos.y
 
     def get_lives(self) -> int:
