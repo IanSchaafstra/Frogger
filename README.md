@@ -16,7 +16,7 @@ Guide your frog safely across busy roads with cars and rivers with floating logs
 - Car speed increases with each level completed, and random generation ensures unique layouts every level
 
 ## Controls 
-t
+
 | Key (on arcade) | Key (on computer) | Action |
 |----|-----|--------|
 | `↑` | `w` | Move Up 
