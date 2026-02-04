@@ -124,13 +124,13 @@ class Level:
             self.check_collisions()
 
             on_start = self.player.rect.colliderect(self.start_zone)
-            if on_start and not self._on_start_last_frame:
-                print("Player on start zone")
+            # if on_start and not self._on_start_last_frame:
+            # print("Player on start zone")
             self._on_start_last_frame = on_start
 
             on_finish = self.player.rect.colliderect(self.finish_zone)
             if on_finish and not self._on_finish_last_frame:
-                print("Finished!")
+                # print("Finished!")
                 # if self.player.get_score() // 14 == 20:
                 #    print("you won")
                 # sould trigger win screen instead
@@ -219,7 +219,7 @@ class Level:
 
         # print(f"on_water: {on_water}, on_log: {on_log}")  # DEBUG
         if on_water and not on_log:
-            print("Player drowned!")
+            # print("Player drowned!")
             self.player_death()
             self.player.set_dying_type("splash")
             self.splash.play()
@@ -233,7 +233,7 @@ class Level:
                 != -1
             ):
                 # hit car code
-                print("Player hit by car!")
+                # print("Player hit by car!")
                 self.player_death()
                 self.player.set_dying_type("crash")
                 self.car_crash.play()
@@ -241,13 +241,13 @@ class Level:
     def player_death(self):
         self.player.lose_live()
         if self.player.get_lives() <= 0:
-            print("game over")
+            # print("game over")
             final_score = self.player.get_score()
             self.set_game_over(final_score)
             self.player.set_game_over()
             self.gameover.set_game_over()
         else:
-            print(f"lives left: {self.player.get_lives()}")
+            # print(f"lives left: {self.player.get_lives()}")
             self.dead = True
             # self.player.reset_player()
 
@@ -291,8 +291,8 @@ class Level:
         self.game_over = True
         if self.highscore:
             new_hs = self.highscore.update(final_score)
-            if new_hs:
-                print(f"New High Score: {final_score}!")
+            # if new_hs:
+            # print(f"New High Score: {final_score}!")
 
     def restart(self):
         self.game_over = False
