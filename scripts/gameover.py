@@ -47,7 +47,7 @@ class GameOver:
                     sys.exit()
         self.image_game_over = pygame.image.load(self.path_game_over)
         self.image_score = pygame.image.load(self.path_score)
-        self.image_press_space = pygame.image.load(self.path_press_space)
+        self.image_press_space = pygame.image.load(self.path_press_a)
         self.image_press_a = pygame.image.load(self.path_press_a)
         self.rect = self.image_game_over.get_rect()
         self.game_over = False
