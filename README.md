@@ -1,5 +1,5 @@
 # Frogger 🐸
-A Classic remake of the arcade game Frogger built with Python and Pygame
+A Classic remake of the arcade game Frogger built with Python and Pygame-CE
 
 ## Description 
 Guide your frog safely across busy roads with cars and rivers with floating logs. Try to reach the finish line at the top to advance to the next level with increased difficulty. 
@@ -16,12 +16,12 @@ Guide your frog safely across busy roads with cars and rivers with floating logs
 - Car speed increases with each level completed, and random generation ensures unique layouts every level
 
 ## Controls 
-
+t
 | Key (on arcade) | Key (on computer) | Action |
 |----|-----|--------|
 | `↑` | `w` | Move Up 
-| `↓` | `a` | Move Down |
-| `←` | `s` |  Move Left |
+| `↓` | `s` | Move Down |
+| `←` | `a` |  Move Left |
 | `→` | `d` | Move Right |
 | `A` | `Spacebar` | Restart (when game over) |
 | `B` | `Escape` | Back to Main menu
@@ -30,7 +30,7 @@ Guide your frog safely across busy roads with cars and rivers with floating logs
 
 #### Requirements:
 - Python 3.12 or 3.14 (*Compatible with 3.12.3 and 3.14.2*)
-- Pygame-CE
+- Pygame-CE 2.5.6 
 
 #### Steps to install
 1. Clone or download this repository from GitHub
@@ -66,9 +66,37 @@ Help your frog cross the road and rivers safely! You have 3 lives, so if you get
 ## Technical Details
 
 - **Resolution**: 1280×960
-- Runs in full-screen with square tiles for smooth movement
+- Display is windowed (non-resizeable)
+- 2D tile-based grid using square tiles
+- Snappy grid aligned movement
 
 ## Project Structure
+
+## Project Structure
+
+- **frogger/**
+  - **assets/**
+    - `*.png` — game sprites and textures  
+    - **sounds/**
+      - audio files (sound effects, music)
+  - **scripts/**
+    - `main.py` — application entry point  
+    - `constants.py` — global constants and configuration  
+    - `inputhandling.py` — input and control handling  
+    - `level.py` — level setup and progression  
+    - `player.py` — player (frog) logic  
+    - `car.py` — car entity logic  
+    - `car_lane.py` — road lane behavior  
+    - `water_lane.py` — water lane behavior  
+    - `log.py` — log entity logic  
+    - `score.py` — score tracking  
+    - `highscore.py` — highscore model  
+    - `highscores.py` — highscore storage and management  
+    - `gameover.py` — game over screen and logic
+  - `README.md` — project documentation  
+  - `requirements.txt` — Python dependencies
+  - `.gitignore` - Ignore unnecessary files
+
 
 ## Credits
 
