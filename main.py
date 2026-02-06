@@ -9,6 +9,8 @@ from next_level import NextLevel
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 from lives_counter import LivesCounter
 
+from inputhandling import Input_Handling
+
 
 pygame.init()
 FPS = 60
@@ -28,10 +30,16 @@ lives_counter = LivesCounter(player)
 
 nextlevel = NextLevel()
 
-
 game_over = GameOver(player, highscore)
 
 level = Level(player, game_over, highscore, nextlevel)
+
+inputhandling = Input_Handling()
+
+gameobjects = [
+    level,
+    player,
+]
 
 
 def main():
@@ -48,23 +56,26 @@ def main():
                 #        level.restart()
                 #        score.reset()
 
-        keys = pygame.key.get_just_pressed()
-        if keys[pygame.K_SPACE] and level.game_over:
+        input_tap = inputhandling.get_input_tap()
+        input_hold = inputhandling.get_input_hold()
+        if input_tap[pygame.K_SPACE] and level.game_over:
             level.restart()
             score.reset()
-        if keys[pygame.K_ESCAPE] and level.game_over:
+        if input_tap[pygame.K_ESCAPE] and level.game_over:
             # self.next_state = "MENU"
             pass
 
-        level.update(dt)
-        player.update(dt)
+        for gameobject in gameobjects:
+            gameobject.update(dt, input_tap, input_hold)
+
         score.update(dt)
         game_over.update(dt)
         nextlevel.update(dt)
 
-        level.draw(screen)
-        player.draw(screen)
         score.draw(screen)
+        for gameobject in gameobjects:
+            gameobject.draw(screen)
+
         lives_counter.draw(screen)
         game_over.draw(screen)
         nextlevel.draw(screen)
