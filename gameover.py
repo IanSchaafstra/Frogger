@@ -17,10 +17,18 @@ class GameOver:
             curr_dir, "assets", "sounds", "GameOver.wav"
         )
         self.item_sound_path = os.path.join(self.assets_path, "GameOverItemAppear.wav")
-        self.image_game_over = pygame.image.load(self.assets_path, "Gameover.png")
-        self.image_score = pygame.image.load(self.assets_path, "Score.png")
-        self.image_press_space = pygame.image.load(self.assets_path, "PressSpace.png")
-        self.image_press_a = pygame.image.load(self.assets_path, "PressA.png")
+        self.image_game_over = pygame.image.load(
+            os.path.join(self.assets_path, "Gameover.png")
+        )
+        self.image_score = pygame.image.load(
+            os.path.join(self.assets_path, "Score.png")
+        )
+        self.image_press_space = pygame.image.load(
+            os.path.join(self.assets_path, "PressSpace.png")
+        )
+        self.image_press_a = pygame.image.load(
+            os.path.join(self.assets_path, "PressA.png")
+        )
         self.rect = self.image_game_over.get_rect()
         self.game_over = False
         self.curtain = 0
@@ -30,8 +38,12 @@ class GameOver:
         self.highscore = highscore
         self.n_points = self.player.get_score()
 
-        self.game_over_sound = pygame.Sound(self.game_over_sound_path)
-        self.item_sound = pygame.Sound(self.item_sound_path)
+        self.game_over_sound = pygame.Sound(
+            os.path.join(self.assets_path, "sounds", "GameOver.wav")
+        )
+        self.item_sound = pygame.Sound(
+            os.path.join(self.assets_path, "sounds", "GameOverItemAppear.wav")
+        )
 
         self.game_over_sound_played = False
         self.score_sound_played = False
