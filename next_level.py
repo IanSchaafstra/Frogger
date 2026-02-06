@@ -1,9 +1,10 @@
 import pygame
 import os
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
+from gameobject import GameObject
 
 
-class NextLevel:
+class NextLevel(GameObject):
     def __init__(self):
         script_dir = os.path.dirname(__file__)
 
@@ -28,7 +29,7 @@ class NextLevel:
     def set_transition(self):
         self.transition = True
 
-    def update(self, dt: float):
+    def update(self, dt: float, input_tap, input_hold):
         if self.transition:
             self.post_transition = False
             if self.curtain_mark > 0:
