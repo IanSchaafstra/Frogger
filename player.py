@@ -1,7 +1,13 @@
 import pygame
 import os
 import sys
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, DEVELOPMENT_MODE
+from constants import (
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    TILE_SIZE,
+    DEVELOPMENT_MODE,
+    HITBOX_SHRINK_AMOUNT,
+)
 from gameobject import GameObject
 
 pygame.init()
@@ -59,48 +65,55 @@ class Player(GameObject):
         if self.game_over or self.freeze:
             return
         else:
-            keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
-            if input_tap[pygame.K_w]:
-                self.pos.y -= TILE_SIZE
-                self.rot_sprite = pygame.transform.rotate(self.sprite, 0)
-                self.hop_sound.play()
-                self._score_multiplier += 0.1
-            if input_tap[pygame.K_s]:
-                self.rot_sprite = pygame.transform.rotate(self.sprite, 180)
-                self.pos.y += TILE_SIZE
-                if self.pos.y > SCREEN_HEIGHT - self.rect.width:
-                    self.pos.y -= TILE_SIZE
-                self._score_multiplier = 1.0
-                self.hop_sound.play()
-            if input_tap[pygame.K_a]:
-                self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
-                self.pos.x -= TILE_SIZE
-                if self.pos.x < 0:
-                    self.pos.x += TILE_SIZE
-                self.hop_sound.play()
-            if keys[pygame.K_d]:
-                self.rot_sprite = pygame.transform.rotate(self.sprite, -90)
-                self.pos.x += TILE_SIZE
-                if self.pos.x > SCREEN_WIDTH - self.rect.width:
-                    self.pos.x -= TILE_SIZE
-                self.hop_sound.play()
-            # skip level
-            if input_tap[pygame.K_p] and DEVELOPMENT_MODE:
-                for i in range(int(self.pos.y // TILE_SIZE) - 1):
-                    self._score += int(100 * self._score_multiplier)
-                    self._score_multiplier += 0.1
-                self.pos.y = 0
-
-            HITBOX_SHRINK = 6
-            self.rect = pygame.Rect(
-                self.pos.x + HITBOX_SHRINK,
-                self.pos.y + HITBOX_SHRINK,
-                TILE_SIZE - 2 * HITBOX_SHRINK,  # 52x wide
-                TILE_SIZE - 2 * HITBOX_SHRINK,  # 52px high (was 64x64)
-            )
+            self.move(input_tap)
             self.curr_sprite = self.rot_sprite
+            self.shrink_hitbox()
             # self.rect = pygame.Rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
             self.update_score()
+
+    def draw(self, screen: pygame.Surface):
+        # pygame.draw.rect(screen, "green", self.rect)
+        screen.blit(self.curr_sprite, self.pos)
+
+    def move(self, input_tap):
+        if input_tap[pygame.K_w]:
+            self.pos.y -= TILE_SIZE
+            self.rot_sprite = pygame.transform.rotate(self.sprite, 0)
+            self.hop_sound.play()
+            self._score_multiplier += 0.1
+        if input_tap[pygame.K_s]:
+            self.rot_sprite = pygame.transform.rotate(self.sprite, 180)
+            self.pos.y += TILE_SIZE
+            if self.pos.y > SCREEN_HEIGHT - self.rect.width:
+                self.pos.y -= TILE_SIZE
+            self._score_multiplier = 1.0
+            self.hop_sound.play()
+        if input_tap[pygame.K_a]:
+            self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
+            self.pos.x -= TILE_SIZE
+            if self.pos.x < 0:
+                self.pos.x += TILE_SIZE
+            self.hop_sound.play()
+        if input_tap[pygame.K_d]:
+            self.rot_sprite = pygame.transform.rotate(self.sprite, -90)
+            self.pos.x += TILE_SIZE
+            if self.pos.x > SCREEN_WIDTH - self.rect.width:
+                self.pos.x -= TILE_SIZE
+            self.hop_sound.play()
+        # skip level
+        if input_tap[pygame.K_p] and DEVELOPMENT_MODE:
+            for i in range(int(self.pos.y // TILE_SIZE) - 1):
+                self._score += int(100 * self._score_multiplier)
+                self._score_multiplier += 0.1
+            self.pos.y = 0
+
+    def shrink_hitbox(self):
+        self.rect = pygame.Rect(
+            self.pos.x + HITBOX_SHRINK_AMOUNT,
+            self.pos.y + HITBOX_SHRINK_AMOUNT,
+            TILE_SIZE - 2 * HITBOX_SHRINK_AMOUNT,  # 52x wide
+            TILE_SIZE - 2 * HITBOX_SHRINK_AMOUNT,  # 52px high (was 64x64)
+        )
 
     def move_with_log(self, log_speed):
         self.pos.x += log_speed
@@ -113,10 +126,6 @@ class Player(GameObject):
             self.is_alive = False
 
         self.rect.x = int(self.pos.x)
-
-    def draw(self, screen: pygame.Surface):
-        # pygame.draw.rect(screen, "green", self.rect)
-        screen.blit(self.curr_sprite, self.pos)
 
     def get_score(self) -> int:
         return self._score
@@ -139,12 +148,13 @@ class Player(GameObject):
         self.rect.topleft = (self.pos.x, self.pos.y)  # Update rect position
         self._score_marker = self.pos.y
         self.game_over = False
+        self.rot_sprite = self.sprite
         self.is_alive = True
 
     def get_modifier(self):
         return str(round(self._score_multiplier, 2))
 
-    def reset_after_death(self):
+    def reset_after_game_over(self):
         self._score = 0
         self._lives = 3
         self.pos = pygame.Vector2(

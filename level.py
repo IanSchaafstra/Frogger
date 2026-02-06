@@ -266,7 +266,7 @@ class Level(GameObject):
         self.transition = True
         self.nextlevel.set_transition()
         self.nextlevel.reset_level()
-        self.player.reset_after_death()
+        self.player.reset_after_game_over()
         self.gameover.reset()
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
