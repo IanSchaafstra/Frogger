@@ -12,12 +12,11 @@ class Score:
         self._score = 0
         self._multiplier = player.get_modifier()
 
-        if os.name == "posix":
-            self.path = os.path.join("..", "assets", "fontPixel.ttf")
-        elif os.name == "nt":
-            self.path = os.path.join("assets", "fontPixel.ttf")
+        curr_dir = os.path.dirname(__file__)
 
-        self.font = pygame.font.Font(self.path, size=50)
+        self.font = pygame.font.Font(
+            os.path.join(curr_dir, "assets", "fontPixel.ttf"), size=50
+        )
 
     def update(self, dt: float):
         # dt isn't used, but is added for compatibility with other classes that use an update function
