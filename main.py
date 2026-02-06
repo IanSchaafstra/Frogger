@@ -40,6 +40,8 @@ gameobjects = [
     level,
     player,
     score,
+    game_over,
+    nextlevel,
 ]
 
 
@@ -69,15 +71,10 @@ def main():
         for gameobject in gameobjects:
             gameobject.update(dt, input_tap, input_hold)
 
-        game_over.update(dt)
-        nextlevel.update(dt)
-
         for gameobject in gameobjects:
             gameobject.draw(screen)
 
         lives_counter.draw(screen)
-        game_over.draw(screen)
-        nextlevel.draw(screen)
 
         pygame.display.update()
         dt = clock.tick(FPS) / 1000  # delta time
