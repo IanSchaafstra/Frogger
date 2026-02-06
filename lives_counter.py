@@ -2,9 +2,10 @@ import pygame
 import os
 from player import Player
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from gameobject import GameObject
 
 
-class LivesCounter:
+class LivesCounter(GameObject):
     def __init__(self, player: Player):
         self.player = player
 
@@ -13,6 +14,9 @@ class LivesCounter:
         self.sprite = pygame.image.load(os.path.join(curr_dir, "assets", "Frog.png"))
 
         self.sprite = pygame.transform.scale_by(self.sprite, 0.75)
+
+    def update(self, dt: float, input_tap, input_hold):
+        pass
 
     def draw(self, screen: pygame.Surface):
         x_pos = SCREEN_WIDTH - self.sprite.width
