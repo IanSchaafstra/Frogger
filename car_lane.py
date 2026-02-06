@@ -2,14 +2,16 @@ import pygame
 import random
 import os
 from car import Car
-from constants import SCREEN_WIDTH
+from constants import (
+    SCREEN_WIDTH,
+    MIN_TIME_BETWEEN_CARS,
+    MAX_TIME_BETWEEN_CARS,
+    CAR_BASE_SPEED,
+)
 
 
 class CarLane:
-    speed = 200.0
-    # time between cars in miniseconds
-    _min_time_between_cars = 1000
-    _max_time_between_cars = 4000
+    speed = CAR_BASE_SPEED
 
     def __init__(self, y: int, driving_rightwards: bool, speed_multiplier: float = 1):
         self.y: int = y
@@ -28,16 +30,14 @@ class CarLane:
         x_pos = -128.0
         while x_pos < SCREEN_WIDTH:
             x_pos += (
-                random.randint(
-                    CarLane._min_time_between_cars, CarLane._max_time_between_cars
-                )
+                random.randint(MIN_TIME_BETWEEN_CARS, MAX_TIME_BETWEEN_CARS)
                 / 1000
                 * CarLane.speed
                 * self.speed_multiplier
             )
             self.cars.append(
                 Car(
-                    x_pos,
+                    int(x_pos),
                     self.y,
                     self.driving_rightwards,
                     CarLane.speed * self.speed_multiplier,
@@ -77,10 +77,7 @@ class CarLane:
                     )
                 )
             self.time_until_next_car += (
-                random.randint(
-                    CarLane._min_time_between_cars, CarLane._max_time_between_cars
-                )
-                / 1000
+                random.randint(MIN_TIME_BETWEEN_CARS, MAX_TIME_BETWEEN_CARS) / 1000
             )
 
     def draw(self, surface: pygame.Surface):
@@ -92,4 +89,3 @@ class CarLane:
         # cars
         for car in self.cars:
             car.draw(surface)
-
