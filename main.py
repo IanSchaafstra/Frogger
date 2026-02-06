@@ -39,6 +39,7 @@ inputhandling = Input_Handling()
 gameobjects = [
     level,
     player,
+    score,
 ]
 
 
@@ -68,11 +69,9 @@ def main():
         for gameobject in gameobjects:
             gameobject.update(dt, input_tap, input_hold)
 
-        score.update(dt)
         game_over.update(dt)
         nextlevel.update(dt)
 
-        score.draw(screen)
         for gameobject in gameobjects:
             gameobject.draw(screen)
 

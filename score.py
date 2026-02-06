@@ -1,11 +1,12 @@
 import pygame
 import os
 from player import Player
+from gameobject import GameObject
 
 pygame.init()
 
 
-class Score:
+class Score(GameObject):
     def __init__(self, player: Player, highscore):
         self.player = player
         self.highscore = highscore
@@ -18,7 +19,7 @@ class Score:
             os.path.join(curr_dir, "assets", "fontPixel.ttf"), size=50
         )
 
-    def update(self, dt: float):
+    def update(self, dt: float, input_tap, input_hold):
         # dt isn't used, but is added for compatibility with other classes that use an update function
 
         self._score = self.player.get_score()
