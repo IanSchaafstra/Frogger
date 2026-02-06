@@ -5,9 +5,10 @@ import os
 from player import Player
 from highscore import HighScore
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from gameobject import GameObject
 
 
-class GameOver:
+class GameOver(GameObject):
     def __init__(self, player: Player, highscore: HighScore):
         curr_dir = os.path.dirname(__file__)
         self.assets_path = os.path.join(curr_dir, "assets")
@@ -61,7 +62,7 @@ class GameOver:
         self.score_sound_played = False
         self.press_key_sound_played = False
 
-    def update(self, dt: float):
+    def update(self, dt: float, input_tap, input_hold):
         if self.game_over:
             if self.curtain < SCREEN_HEIGHT + 20:
                 self.curtain += 1000 * dt

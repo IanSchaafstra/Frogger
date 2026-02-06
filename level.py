@@ -7,11 +7,12 @@ from player import Player
 from gameover import GameOver
 from highscore import HighScore
 from next_level import NextLevel
+from gameobject import GameObject
 import random
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 
 
-class Level:
+class Level(GameObject):
     def __init__(
         self,
         player: Player,
@@ -78,7 +79,7 @@ class Level:
         # self.music.play(loops=-1)
         # pygame.mixer_music.play(loops=-1)
 
-    def update(self, dt):
+    def update(self, dt, input_tap, input_hold):
         self.dt = dt  # dt is now global
         old_transition = self.transition
         self.transition = self.nextlevel.get_transition()

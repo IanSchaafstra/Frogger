@@ -2,11 +2,12 @@ import pygame
 import os
 import sys
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, DEVELOPMENT_MODE
+from gameobject import GameObject
 
 pygame.init()
 
 
-class Player:
+class Player(GameObject):
     def __init__(self, location: pygame.Vector2) -> None:
         self.pos = location
         script_dir = os.path.dirname(__file__)
@@ -47,7 +48,7 @@ class Player:
         self.dead_timer = 0.0
         self.dying_type = "None"
 
-    def update(self, dt: float):
+    def update(self, dt: float, input_tap, input_hold):
         self.dt = dt
         if self.dying:
             if self.dying_type == "splash":
@@ -59,19 +60,19 @@ class Player:
             return
         else:
             keys = pygame.key.get_just_pressed()  # input handling happens within the update function for now. We could implement an input handling script later and pass it as a parameter.
-            if keys[pygame.K_w]:
+            if input_tap[pygame.K_w]:
                 self.pos.y -= TILE_SIZE
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 0)
                 self.hop_sound.play()
                 self._score_multiplier += 0.1
-            if keys[pygame.K_s]:
+            if input_tap[pygame.K_s]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 180)
                 self.pos.y += TILE_SIZE
                 if self.pos.y > SCREEN_HEIGHT - self.rect.width:
                     self.pos.y -= TILE_SIZE
                 self._score_multiplier = 1.0
                 self.hop_sound.play()
-            if keys[pygame.K_a]:
+            if input_tap[pygame.K_a]:
                 self.rot_sprite = pygame.transform.rotate(self.sprite, 90)
                 self.pos.x -= TILE_SIZE
                 if self.pos.x < 0:
@@ -84,7 +85,7 @@ class Player:
                     self.pos.x -= TILE_SIZE
                 self.hop_sound.play()
             # skip level
-            if keys[pygame.K_p] and DEVELOPMENT_MODE:
+            if input_tap[pygame.K_p] and DEVELOPMENT_MODE:
                 for i in range(int(self.pos.y // TILE_SIZE) - 1):
                     self._score += int(100 * self._score_multiplier)
                     self._score_multiplier += 0.1
