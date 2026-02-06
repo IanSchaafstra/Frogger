@@ -10,25 +10,10 @@ from gameobject import GameObject
 
 class GameMode(GameObject, ABC):
     @abstractmethod
-    def __init__(
-        self,
-        name: str,
-        player: Player,
-        score: Score,
-        gameover: GameOver,
-        highscore: HighScore,
-    ):
+    def __init__(self, name: str, screen: pygame.Surface):
         self.name = name
-        self.player = player
-        self.score_class = Score
-        self.gameover = gameover
-        self.highscore = highscore
-        self.gameobjects = [
-            self.player,
-            self.score_class,
-            self.gameover,
-            self.highscore,
-        ]
+        self.screen = screen
+        self.gameobjects = []
 
     @abstractmethod
     def update(self, dt: float, input_tap, input_hold):

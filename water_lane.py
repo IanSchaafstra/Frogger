@@ -54,4 +54,3 @@ class WaterLane:
                 if overlap_width >= MIN_OVERLAP and overlap_height >= MIN_OVERLAP:
                     return log
         return None
-

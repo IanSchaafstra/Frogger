@@ -10,8 +10,6 @@ class NextLevel(GameObject):
 
         self.font_path = os.path.join(script_dir, "assets", "fontPixel.ttf")
         self.font = pygame.Font(self.font_path, size=40)
-        self.font
-
         self.curtain = SCREEN_HEIGHT  # NOTE: Just like in gameover.py, this controls the gradual covering of the screen. The higher the value, the lower the top of the black box is.
         self.transition = True
         self.timer = 0.0  # NOTE: this is used to extend the time the screen is black
