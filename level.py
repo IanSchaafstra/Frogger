@@ -27,7 +27,7 @@ class Level(GameObject):
         self.startfinish_color = (0, 255, 0)  # green
         self.platform_color = (100, 100, 100)  # grey
 
-        # textures
+        # NOTE: textures
         script_dir = os.path.dirname(__file__)
         grass_image_path = os.path.join(script_dir, "assets", "Grass.png")
         self.grass_image = pygame.image.load(grass_image_path).convert_alpha()
@@ -35,7 +35,7 @@ class Level(GameObject):
         finish_image_path = os.path.join(script_dir, "assets", "Finish.png")
         self.finish_image = pygame.image.load(finish_image_path).convert_alpha()
 
-        # sounds
+        # NOTE: sounds
         self.splash_path = os.path.join(script_dir, "assets", "sounds", "Splash.wav")
         self.splash = pygame.Sound(self.splash_path)
 
@@ -48,27 +48,17 @@ class Level(GameObject):
         self.music = pygame.mixer.music.load(self.music_path)
         self.volume = pygame.mixer_music.get_volume()
 
-        # self.platforms = []
-        # self.platforms.append(pygame.Rect(0, 386, self.screen_width, 64))
-        # self.platforms.append(pygame.Rect(0, 448, self.screen_width, 64))
-
         self.finish_zone = pygame.Rect(0, 0, SCREEN_WIDTH, 50)
         self.start_zone = pygame.Rect(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50)
 
         self.car_lanes: list[CarLane] = []
         self.water_lanes: list[WaterLane] = []
-        # self.car_lanes: list[CarLane] = [CarLane(384, True), CarLane(448, False), CarLane(512, True, 1.5)]
-        # self.water_lanes = [
-        #    WaterLane(128, moving_right=True, speed=2, log_count=3),
-        #    WaterLane(192, moving_right=False, speed=3, log_count=2),
-        #    WaterLane(256, moving_right=True, speed=2, log_count=4),
-        # ]
 
         self._on_start_last_frame = False
         self._on_finish_last_frame = False
         self.game_over = False
-        self.dead = False
-        self.dead_timer = 0.0
+        self.dying = False
+        self.dying_timer = 0.0
         self.transition = True
         self.first_transition = True
 
@@ -86,12 +76,12 @@ class Level(GameObject):
         if old_transition != self.transition and old_transition:
             self.generate_level(self.player.get_score())
         self.player.set_freeze(self.transition)
-        if self.dead:
-            if self.dead_timer < 1:
-                self.dead_timer += dt
+        if self.dying:
+            if self.dying_timer < 1:
+                self.dying_timer += dt
             else:
-                self.dead_timer = 0.0
-                self.dead = False
+                self.dying_timer = 0.0
+                self.dying = False
                 self.player.reset_player()
             return
         if self.game_over:
@@ -245,7 +235,7 @@ class Level(GameObject):
             self.gameover.set_game_over()
         else:
             # print(f"lives left: {self.player.get_lives()}")
-            self.dead = True
+            self.dying = True
             # self.player.reset_player()
 
     def draw(self, screen):
