@@ -66,23 +66,17 @@ class Level(GameObject):
 
         self.generate_level(self.player.get_score())
 
-        # self.music.play(loops=-1)
-        # pygame.mixer_music.play(loops=-1)
-
     def update(self, dt, input_tap, input_hold):
         self.dt = dt  # dt is now global
+
         old_transition = self.transition
         self.transition = self.nextlevel.get_transition()
         if old_transition != self.transition and old_transition:
+            # NOTE: checks if the transition state (true or false) is diffirent from the one of the previous frame. If it is, it'll generate a new level.
             self.generate_level(self.player.get_score())
         self.player.set_freeze(self.transition)
         if self.dying:
-            if self.dying_timer < 1:
-                self.dying_timer += dt
-            else:
-                self.dying_timer = 0.0
-                self.dying = False
-                self.player.reset_player()
+            self.handle_dying_timer()  # NOTE: This decides which frame the death animation should display
             return
         if self.game_over:
             pygame.mixer_music.stop()
@@ -99,8 +93,7 @@ class Level(GameObject):
             if self.volume < 1:
                 self.volume += 0.05
             pygame.mixer_music.set_volume(self.volume)
-            # pygame.mixer_music.set_volume(1)
-            # Hier zou je enemies/platform logic updaten
+
             for car_lane in self.car_lanes:
                 car_lane.update(dt)
 
@@ -111,24 +104,39 @@ class Level(GameObject):
             self.check_collisions()
 
             on_start = self.player.rect.colliderect(self.start_zone)
-            # if on_start and not self._on_start_last_frame:
-            # print("Player on start zone")
             self._on_start_last_frame = on_start
 
             on_finish = self.player.rect.colliderect(self.finish_zone)
             if on_finish and not self._on_finish_last_frame:
-                # print("Finished!")
-                # if self.player.get_score() // 14 == 20:
-                #    print("you won")
-                # sould trigger win screen instead
-                #    self.player_death()
-                # else:
+                # NOTE: This handles moving from one level to the other
                 self.nextlevel.set_transition()
                 self.nextlevel.increase_level()
                 self.player.reset_player()
-                # self.generate_level(self.player.get_score())
-                # This line has been moved to the top of the update method, so that the level gets generated without the player seeing it.
             self._on_finish_last_frame = on_finish
+
+    def draw(self, screen):
+        # grass
+        self.draw_grass(screen)
+
+        # Start/Finish zones
+        for x in range(0, SCREEN_WIDTH, self.finish_image.get_width()):
+            screen.blit(self.finish_image, (x, 0))
+
+        # Cars
+        for car_lane in self.car_lanes:
+            car_lane.draw(screen)
+
+        # Water lanes
+        for water_lane in self.water_lanes:
+            water_lane.draw(screen)
+
+    def handle_dying_timer(self):
+        if self.dying_timer < 1:
+            self.dying_timer += self.dt
+        else:
+            self.dying_timer = 0.0
+            self.dying = False
+            self.player.reset_player()
 
     def clear_lanes(self):
         self.car_lanes.clear()
@@ -138,7 +146,9 @@ class Level(GameObject):
         self.clear_lanes()
 
         # increase car speed
-        CarLane.speed = 200 + self.nextlevel.get_level() * 14
+        CarLane.speed = (
+            200 + self.nextlevel.get_level() * 14
+        )  # TODO: implement a proper speed increase system
 
         # load new lanes
         # every {lane_count_scaling} score add 1 water or car lane
@@ -236,36 +246,6 @@ class Level(GameObject):
         else:
             # print(f"lives left: {self.player.get_lives()}")
             self.dying = True
-            # self.player.reset_player()
-
-    def draw(self, screen):
-        # grass
-        self.draw_grass(screen)
-
-        # Start/Finish zones
-        for x in range(0, SCREEN_WIDTH, self.finish_image.get_width()):
-            screen.blit(self.finish_image, (x, 0))
-
-        # Platforms
-        # for plat in self.platforms:
-        #    pygame.draw.rect(screen, self.platform_color, plat)
-
-        # Cars
-        for car_lane in self.car_lanes:
-            car_lane.draw(screen)
-
-        # Water lanes
-        for water_lane in self.water_lanes:
-            water_lane.draw(screen)
-        # the reset_player function has been moved to player.py
-
-        #    def reset_player(self):
-        #        self.player.pos.update(self.screen_width // 2, self.screen_height - 100)
-        #        self.player.rect.topleft = (
-        #            self.player.pos.x,
-        #            self.player.pos.y,
-        # )  # this line is redundant. It doesn't seem to be causing issues, but it gives an error in my code editor.
-        #
 
     def draw_grass(self, screen):
         for y in range(
