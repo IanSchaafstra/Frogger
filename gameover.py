@@ -9,46 +9,26 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 class GameOver:
     def __init__(self, player: Player, highscore: HighScore):
-        if os.name == "nt":
-            self.path_game_over = os.path.join("assets", "Gameover.png")
-            self.path_score = os.path.join("assets", "Score.png")
-            self.path_press_space = os.path.join("assets", "PressSpace.png")
-            self.path_press_a = os.path.join("assets", "PressA.png")
-            self.path_font = os.path.join("assets", "fontPixel.ttf")
-            self.font = pygame.Font(self.path_font, size=120)
-            self.game_over_sound_path = os.path.join("assets", "sounds", "GameOver.wav")
-            self.item_sound_path = os.path.join(
-                "assets", "sounds", "GameOverItemAppear.wav"
-            )
-        elif os.name == "posix":
-            try:
-                self.path_game_over = os.path.join("..", "assets", "Gameover.png")
-                self.path_score = os.path.join("..", "assets", "Score.png")
-                self.path_press_space = os.path.join("..", "assets", "PressSpace.png")
-                self.path_press_a = os.path.join("..", "assets", "PressA.png")
-                self.path_font = os.path.join("..", "assets", "fontPixel.ttf")
-                self.font = pygame.Font(self.path_font, size=120)
-                self.game_over_sound_path = os.path.join(
-                    "..", "assets", "sounds", "GameOver.wav"
-                )
-                self.item_sound_path = os.path.join(
-                    "..", "assets", "sounds", "GameOverItemAppear.wav"
-                )
-            except FileNotFoundError:
-                try:
-                    self.path_game_over = os.path.join("assets", "Gameover.png")
-                    self.path_score = os.path.join("assets", "Score.png")
-                    self.path_press_space = os.path.join("assets", "PressSpace.png")
-                    self.path_press_a = os.path.join("assets", "PressA.png")
-                    self.path_font = os.path.join("assets", "fontPixel.ttf")
-                    self.font = pygame.Font(self.path_font, size=120)
-                except FileNotFoundError:
-                    print("File Gameover.png could not be loaded. Exiting.")
-                    sys.exit()
-        self.image_game_over = pygame.image.load(self.path_game_over)
-        self.image_score = pygame.image.load(self.path_score)
-        self.image_press_space = pygame.image.load(self.path_press_a)
-        self.image_press_a = pygame.image.load(self.path_press_a)
+        curr_dir = os.path.dirname(__file__)
+        self.assets_path = os.path.join(curr_dir, "assets")
+        self.path_font = os.path.join(curr_dir, "assets", "fontPixel.ttf")
+        self.font = pygame.Font(self.path_font, size=120)
+        self.game_over_sound_path = os.path.join(
+            curr_dir, "assets", "sounds", "GameOver.wav"
+        )
+        self.item_sound_path = os.path.join(self.assets_path, "GameOverItemAppear.wav")
+        self.image_game_over = pygame.image.load(
+            os.path.join(self.assets_path, "Gameover.png")
+        )
+        self.image_score = pygame.image.load(
+            os.path.join(self.assets_path, "Score.png")
+        )
+        self.image_press_space = pygame.image.load(
+            os.path.join(self.assets_path, "PressSpace.png")
+        )
+        self.image_press_a = pygame.image.load(
+            os.path.join(self.assets_path, "PressA.png")
+        )
         self.rect = self.image_game_over.get_rect()
         self.game_over = False
         self.curtain = 0
@@ -58,8 +38,12 @@ class GameOver:
         self.highscore = highscore
         self.n_points = self.player.get_score()
 
-        self.game_over_sound = pygame.Sound(self.game_over_sound_path)
-        self.item_sound = pygame.Sound(self.item_sound_path)
+        self.game_over_sound = pygame.Sound(
+            os.path.join(self.assets_path, "sounds", "GameOver.wav")
+        )
+        self.item_sound = pygame.Sound(
+            os.path.join(self.assets_path, "sounds", "GameOverItemAppear.wav")
+        )
 
         self.game_over_sound_played = False
         self.score_sound_played = False

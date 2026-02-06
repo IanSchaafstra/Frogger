@@ -28,26 +28,22 @@ class Level:
 
         # textures
         script_dir = os.path.dirname(__file__)
-        grass_image_path = os.path.join(script_dir, "..", "assets", "Grass.png")
+        grass_image_path = os.path.join(script_dir, "assets", "Grass.png")
         self.grass_image = pygame.image.load(grass_image_path).convert_alpha()
 
-        finish_image_path = os.path.join(script_dir, "..", "assets", "Finish.png")
+        finish_image_path = os.path.join(script_dir, "assets", "Finish.png")
         self.finish_image = pygame.image.load(finish_image_path).convert_alpha()
 
         # sounds
-        self.splash_path = os.path.join(
-            script_dir, "..", "assets", "sounds", "Splash.wav"
-        )
+        self.splash_path = os.path.join(script_dir, "assets", "sounds", "Splash.wav")
         self.splash = pygame.Sound(self.splash_path)
 
         self.car_crash_path = os.path.join(
-            script_dir, "..", "assets", "sounds", "CarCrash.wav"
+            script_dir, "assets", "sounds", "CarCrash.wav"
         )
         self.car_crash = pygame.Sound(self.car_crash_path)
 
-        self.music_path = os.path.join(
-            script_dir, "..", "assets", "sounds", "FroggerBGM.wav"
-        )
+        self.music_path = os.path.join(script_dir, "assets", "sounds", "FroggerBGM.wav")
         self.music = pygame.mixer.music.load(self.music_path)
         self.volume = pygame.mixer_music.get_volume()
 

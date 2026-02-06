@@ -7,7 +7,7 @@ class NextLevel:
     def __init__(self):
         script_dir = os.path.dirname(__file__)
 
-        self.font_path = os.path.join(script_dir, "..", "assets", "fontPixel.ttf")
+        self.font_path = os.path.join(script_dir, "assets", "fontPixel.ttf")
         self.font = pygame.Font(self.font_path, size=40)
         self.font
 

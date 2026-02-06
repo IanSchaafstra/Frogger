@@ -8,15 +8,11 @@ class LivesCounter:
     def __init__(self, player: Player):
         self.player = player
 
-        if os.name == "posix":
-            self.path = os.path.join("..", "assets", "Frog.png")
-        elif os.name == "nt":
-            self.path = os.path.join("assets", "Frog.png")
-        else:
-            print("Error with asset loading, please report")
-            sys.exit()
+        curr_dir = os.path.dirname(__file__)
 
-        self.sprite = pygame.transform.scale_by(pygame.image.load(self.path), 0.75)
+        self.sprite = pygame.image.load(os.path.join(curr_dir, "assets", "Frog.png"))
+
+        self.sprite = pygame.transform.scale_by(self.sprite, 0.75)
 
     def draw(self, screen: pygame.Surface):
         x_pos = SCREEN_WIDTH - self.sprite.width

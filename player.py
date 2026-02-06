@@ -10,20 +10,7 @@ class Player:
     def __init__(self, location: pygame.Vector2) -> None:
         self.pos = location
         script_dir = os.path.dirname(__file__)
-        if os.name == "posix":
-            self.path = os.path.join("..", "assets", "Frog.png")
-            self.hop_sound_path = os.path.join("..", "assets", "sounds", "Hop.wav")
-        elif os.name == "nt":
-            self.path = os.path.join("assets", "Frog.png")
-            self.hop_sound_path = os.path.join("assets", "sounds", "Hop.wav")
-        else:
-            print("Error with asset loading, please report")
-            sys.exit()
-            # if os.name == "posix":
-            #    self.sprite = pygame.image.load("../assets/Frog.png")
-            # elif os.name == "nt":
-            #    self.sprite = pygame.image.load("..\\assets\\Frog.png")
-        splash_dir = os.path.join(script_dir, "..", "assets", "FrogDrown")
+        splash_dir = os.path.join(script_dir, "assets", "FrogDrown")
         self.splash_anim = [
             pygame.image.load(os.path.join(splash_dir, "FrogDrown_0001.png")),
             pygame.image.load(os.path.join(splash_dir, "FrogDrown_0002.png")),
@@ -32,18 +19,20 @@ class Player:
             pygame.image.load(os.path.join(splash_dir, "FrogDrown_0005.png")),
             pygame.image.load(os.path.join(splash_dir, "FrogDrown_0006.png")),
         ]
-        crash_dir = os.path.join(script_dir, "..", "assets", "FrogCrash")
+        crash_dir = os.path.join(script_dir, "assets", "FrogCrash")
         self.crash_anim = [
             pygame.image.load(os.path.join(crash_dir, "FrogCrash_0001.png")),
             pygame.image.load(os.path.join(crash_dir, "FrogCrash_0002.png")),
             pygame.image.load(os.path.join(crash_dir, "FrogCrash_0003.png")),
             pygame.image.load(os.path.join(crash_dir, "FrogCrash_0004.png")),
         ]
-        self.sprite = pygame.image.load(self.path)
+        self.sprite = pygame.image.load(os.path.join(script_dir, "assets", "Frog.png"))
         self.rot_sprite = self.sprite
         self.curr_sprite = self.sprite
         self.rect = self.sprite.get_rect(topleft=self.pos)
-        self.hop_sound = pygame.Sound(self.hop_sound_path)
+        self.hop_sound = pygame.Sound(
+            os.path.join(script_dir, "assets", "sounds", "Hop.wav")
+        )
 
         self._score = 0
         self._score_multiplier = 1.0
